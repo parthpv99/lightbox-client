@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import { Container } from "@material-ui/core";
+import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LandingHeader = () => {
+const LandingHeader = (props) => {
   const classes = useStyles();
 
   return (
@@ -58,6 +59,9 @@ const LandingHeader = () => {
               color="inherit"
               variant="outlined"
               className={classes.btnspace}
+              onClick={() => {
+                props.history.push("/login");
+              }}
             >
               Login
             </Button>
@@ -68,4 +72,4 @@ const LandingHeader = () => {
   );
 };
 
-export default LandingHeader;
+export default withRouter(LandingHeader);
