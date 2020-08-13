@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, Grid, CardContent, Button } from "@material-ui/core";
-import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -14,13 +14,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LoginPage = (props) => {
+const RegisterPage = (props) => {
   const classes = useStyles();
 
   // const handleForgotPassword = () => {};
   let history = useHistory();
   return (
-    <div className="login-page">
+    <div className="register-page">
       <Grid
         container
         direction="column"
@@ -34,19 +34,16 @@ const LoginPage = (props) => {
               <h1 className={classes.title}>Lightbox</h1>
             </Grid>
             <Grid container justify="center">
-              <LoginForm setLogin={props.setLogin} />
+              <RegisterForm setLogin={props.setLogin} />
             </Grid>
             <Grid container justify="center">
-              <Button color="primary">Forgot Password?</Button>
-            </Grid>
-            <Grid container justify="center">
-              <p>New to lightbox?</p>
+              <p>Already on lightbox?</p>
               <Button
                 color="primary"
                 size="small"
-                onClick={() => history.replace("/register")}
+                onClick={() => history.replace("/login")}
               >
-                join now
+                Login
               </Button>
             </Grid>
           </CardContent>
@@ -56,4 +53,4 @@ const LoginPage = (props) => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

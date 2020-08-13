@@ -52,7 +52,13 @@ const LandingHeader = (props) => {
               Lightbox
             </Typography>
 
-            <Button color="inherit" className={classes.btnspace}>
+            <Button
+              color="inherit"
+              className={classes.btnspace}
+              onClick={() => {
+                props.history.push("/register");
+              }}
+            >
               Join now
             </Button>
             <Button

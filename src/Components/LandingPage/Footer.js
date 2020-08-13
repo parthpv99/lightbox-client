@@ -16,9 +16,9 @@ const Footer = () => {
   return (
     <div className={classes.footer}>
       <Container>
-        <Grid container spacing>
+        <Grid container spacing={1}>
           <Grid item sm={6}>
-            <p>Lightbox, Copyright 2020</p>
+            <p>&#169; Lightbox, Copyright 2020</p>
           </Grid>
           <Grid item sm={6}>
             <Grid container justify="space-evenly">
