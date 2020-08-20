@@ -3,11 +3,16 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import theme from "./theme";
+import navbartheme from "./navbartheme";
 import LandingPage from "./Components/LandingPage/LandingPage";
 import LoginPage from "./Components/LoginPage/LoginPage";
-import Dashboard from "./Components/HomePage/Dashboard";
+import HomePage from "./Components/HomePage/HomePage";
 import { getCookies } from "./utility";
 import RegisterPage from "./Components/RegisterPage/RegisterPage";
+import Navbar from "./Components/Navbar/Navbar";
+import ConnectionPage from "./Components/ConnectionPage/ConnectionPage";
+import ForumPage from "./Components/ForumPage/ForumPage";
+import ChatPage from "./Components/ChatPage/ChatPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -46,15 +51,35 @@ function App() {
   };
 
   const toHome = () => {
-    return isLoggedIn ? <Dashboard /> : <Redirect to="/login" />;
+    return isLoggedIn ? <HomePage /> : <Redirect to="/login" />;
+  };
+
+  const toConnections = () => {
+    return isLoggedIn ? <ConnectionPage /> : <Redirect to="/login" />;
+  };
+
+  const toChats = () => {
+    return isLoggedIn ? <ChatPage /> : <Redirect to="/login" />;
+  };
+
+  const toForums = () => {
+    return isLoggedIn ? <ForumPage /> : <Redirect to="/login" />;
   };
 
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        {isLoggedIn && (
+          <ThemeProvider theme={navbartheme}>
+            <Navbar />
+          </ThemeProvider>
+        )}
         <Switch>
           <Route exact path="/home" render={() => toHome()} />
+          <Route exact path="/connections" render={() => toConnections()} />
+          <Route exact path="/chats" render={() => toChats()} />
+          <Route exact path="/forums" render={() => toForums()} />
           <Route exact path="/login" render={() => checkLogin()} />
           <Route exact path="/register" render={() => checkRegister()} />
           <Route path="/">{isAuthenticated}</Route>

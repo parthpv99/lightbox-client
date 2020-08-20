@@ -41,7 +41,7 @@ const RegisterForm = (props) => {
       // .then((response) => response.json())
       .then(async (res) => {
         // console.log(res);
-        const data = await res.json();
+        // const data = await res.json();
         if (res.status === 200) {
           // console.log(obj.email);
           let accessToken = "access-token";
