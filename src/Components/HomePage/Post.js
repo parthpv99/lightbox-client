@@ -55,7 +55,8 @@ const StyledBadge = withStyles((theme) => ({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 550,
+    maxWidth: 600,
+    margin: 10,
   },
   media: {
     height: 0,
@@ -380,10 +381,10 @@ const Post = () => {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <Divider style={{ marginLeft: 10, marginRight: 10 }} />
         <CardContent>
-          {comment}
-          {comment}
-          {comment}
           {commentBox}
+          {comment}
+          {comment}
+          {comment}
         </CardContent>
       </Collapse>
     </Card>

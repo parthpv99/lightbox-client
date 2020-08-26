@@ -103,7 +103,7 @@ const Navbar = (props) => {
 
   return (
     <div>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <Typography className={classes.title} variant="h5" noWrap>
             Lightbox

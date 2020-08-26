@@ -1,6 +1,6 @@
 let setCookies = (name, value) => {
   let d = new Date();
-  let maxAge = "max-age=" + (d.getSeconds() + 60 * 60 * 24);
+  let maxAge = "max-age=" + (d.getSeconds() + 7 * 60 * 60 * 24);
   // "name=medium;max-age=31536000"
   document.cookie = name + "=" + value + ";" + maxAge;
 };
