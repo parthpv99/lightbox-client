@@ -15,6 +15,11 @@ const useStyles = makeStyles((theme) => ({
       color: "rgba(95, 95, 95, 1.0)",
       fontSize: "1.1rem",
     },
+    [theme.breakpoints.down("sm")]: {
+      "&:disabled": {
+        fontSize: "0.75rem",
+      },
+    },
   },
 }));
 

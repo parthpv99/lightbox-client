@@ -11,12 +11,16 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import Typography from "@material-ui/core/Typography";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
+import { Paper, CardContent, Card } from "@material-ui/core";
 
 const styles = (theme) => ({
   root: {
     margin: 0,
     minWidth: "600px",
     padding: theme.spacing(2),
+    [theme.breakpoints.down("sm")]: {
+      minWidth: "350px",
+    },
   },
   closeButton: {
     position: "absolute",
@@ -128,6 +132,7 @@ const CreatePostBox = () => {
   const removeImage = (index) => {
     const imgs = [...images];
     imgs.splice(index, 1);
+
     setImages(imgs);
   };
 
@@ -155,12 +160,19 @@ const CreatePostBox = () => {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      {/* <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Open dialog
-      </Button>
+      </Button> */}
+      <Card onClick={handleClickOpen} style={{ margin: 10 }}>
+        <CardContent>
+          <Typography variant="body2" color="textSecondary" component="p">
+            What's on your mind...
+          </Typography>
+        </CardContent>
+      </Card>
       {WarningDialog}
       <Dialog
-        disableBackdropClick="true"
+        disableBackdropClick
         onClose={handleWarningClickOpen}
         aria-labelledby="customized-dialog-title"
         open={open}
@@ -199,7 +211,7 @@ const CreatePostBox = () => {
                 >
                   <CancelIcon fontSize="large" />
                 </IconButton>
-                <img src={image} width="100%" />
+                <img src={image} width="100%" alt="" />
               </div>
             ))}
           {/* <Typography gutterBottom>

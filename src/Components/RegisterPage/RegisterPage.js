@@ -11,6 +11,16 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     fontSize: "2rem",
     fontWeight: "bold",
+    [theme.breakpoints.down("sm")]: {
+      fontSie: "1.6rem",
+      textAlign: "center",
+    },
+  },
+  card: {
+    width: "40%",
+    [theme.breakpoints.down("sm")]: {
+      width: "90%",
+    },
   },
 }));
 
@@ -28,7 +38,7 @@ const RegisterPage = (props) => {
         alignItems="center"
         style={{ minHeight: "100vh" }}
       >
-        <Card style={{ width: "40%" }}>
+        <Card className={classes.card}>
           <CardContent>
             <Grid item>
               <h1 className={classes.title}>Lightbox</h1>

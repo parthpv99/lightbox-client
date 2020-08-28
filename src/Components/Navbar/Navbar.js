@@ -11,23 +11,15 @@ import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { withRouter } from "react-router-dom";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import Paper from "@material-ui/core/Paper";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import HomeIcon from "@material-ui/icons/Home";
-import ForumIcon from "@material-ui/icons/Forum";
-import GroupAddIcon from "@material-ui/icons/GroupAdd";
-import GroupIcon from "@material-ui/icons/Group";
+import { useMediaQuery, Grid } from "@material-ui/core";
+import NavigationMenu from "./NavigationMenu";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
   title: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
-    },
+    display: "block",
   },
   search: {
     position: "relative",
@@ -72,97 +64,82 @@ const useStyles = makeStyles((theme) => ({
       display: "flex",
     },
   },
-  tabs: {
-    backgroundColor: theme.palette.primary.main,
-    boxShadow: theme.shadows[0],
-  },
 }));
 
 const Navbar = (props) => {
   const classes = useStyles();
   const menuId = "primary-search-account-menu";
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    event.preventDefault();
-    setValue(newValue);
-    switch (newValue) {
-      case 1:
-        props.history.push("/connections");
-        break;
-      case 2:
-        props.history.push("/chats");
-        break;
-      case 3:
-        props.history.push("/forums");
-        break;
-      default:
-        props.history.push("/home");
-    }
-  };
+  let matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
 
   return (
     <div>
       <AppBar position="fixed">
         <Toolbar>
-          <Typography className={classes.title} variant="h5" noWrap>
-            Lightbox
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-            />
-          </div>
-          <div style={{ marginLeft: "5%" }}>
-            <Paper square className={classes.tabs}>
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                variant="fullWidth"
-                TabIndicatorProps={{
-                  style: {
-                    height: "0.25rem",
-                  },
-                }}
-                indicatorColor="secondary"
-                textColor="secondary"
-                aria-label="icon tabs example"
-              >
-                <Tab icon={<HomeIcon />} aria-label="home" />
-                <Tab icon={<GroupAddIcon />} aria-label="connection" />
-                <Tab icon={<ForumIcon />} aria-label="chat" />
-                <Tab icon={<GroupIcon />} aria-label="forum" />
-              </Tabs>
-            </Paper>
-          </div>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton color="inherit">
-              <AddCircleIcon />
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={5} max={9} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
+          <Grid
+            container
+            direction="row"
+            // justify="space-between"
+            alignItems="center"
+          >
+            <Grid item xs={matches ? 3 : 6} container>
+              <Typography className={classes.title} variant="h5" noWrap>
+                Lightbox
+              </Typography>
+              {matches && (
+                <div className={classes.search}>
+                  <div className={classes.searchIcon}>
+                    <SearchIcon />
+                  </div>
+                  <InputBase
+                    placeholder="Search…"
+                    classes={{
+                      root: classes.inputRoot,
+                      input: classes.inputInput,
+                    }}
+                  />
+                </div>
+              )}
+            </Grid>
+            {matches && (
+              <Grid item xs={6}>
+                <div style={{ marginLeft: "5%" }}>
+                  <NavigationMenu history={props.history} />
+                </div>
+              </Grid>
+            )}
+            {/* <div className={classes.grow} /> */}
+            <Grid item xs={matches ? 3 : 6} container justify="flex-end">
+              <div className={classes.sectionDesktop}>
+                {!matches && (
+                  <IconButton color="inherit">
+                    <SearchIcon />
+                  </IconButton>
+                )}
+                <IconButton color="inherit">
+                  <AddCircleIcon />
+                </IconButton>
+                <IconButton
+                  aria-label="show 17 new notifications"
+                  color="inherit"
+                >
+                  <Badge badgeContent={5} max={9} color="error">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </div>
+            </Grid>
+          </Grid>
         </Toolbar>
+        {!matches && <NavigationMenu history={props.history} />}
       </AppBar>
     </div>
   );

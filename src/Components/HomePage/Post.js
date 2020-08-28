@@ -23,6 +23,7 @@ import InputBase from "@material-ui/core/InputBase";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
+import ViewPhotos from "./ViewPhotos";
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -57,6 +58,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 600,
     margin: 10,
+    //remove this in future
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 50,
+    },
   },
   media: {
     height: 0,
@@ -140,6 +145,7 @@ const Post = () => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const [upvoted, setUpvoted] = React.useState(false);
+  const [openImages, setOpenImages] = React.useState(false);
 
   const btnClass = classNames(
     classes.btnspace,
@@ -200,7 +206,7 @@ const Post = () => {
   );
 
   const imageHandler = () => {
-    console.log("Image Pressed");
+    setOpenImages(!openImages);
   };
 
   const totalImages = 10;
@@ -260,13 +266,13 @@ const Post = () => {
       </Grid>
     </div>
   );
+  const data =
+    "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.";
 
   const cardData = (
     <CardContent>
       <Typography variant="body2" color="textSecondary" component="p">
-        This impressive paella is a perfect party dish and a fun meal to cook
-        together with your guests. Add 1 cup of frozen peas along with the
-        mussels, if you like.
+        {data}
       </Typography>
     </CardContent>
   );
@@ -371,12 +377,25 @@ const Post = () => {
     </Paper>
   );
 
+  const allData = {
+    images: [
+      "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1007&q=80",
+      "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+      "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1052&q=80",
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1002&q=80",
+    ],
+    header: cardHeader,
+    data: cardData,
+  };
+
   return (
     <Card className={classes.root}>
       {cardHeader}
       {cardData}
       {cardMedia}
       <Divider style={{ margin: 8, marginBottom: 0 }} />
+      {openImages && <ViewPhotos closeImages={imageHandler} data={allData} />}
+      {/*pass post photos in above component*/}
       {cardAction}
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <Divider style={{ marginLeft: 10, marginRight: 10 }} />

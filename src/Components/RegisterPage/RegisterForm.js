@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Typography, TextField, Button, Grid } from "@material-ui/core";
+import {
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  useMediaQuery,
+} from "@material-ui/core";
 // import { useHistory } from "react-router-dom";
 import { kBaseUrl } from "../../constants";
 import { setCookies } from "../../utility";
@@ -13,6 +19,7 @@ const RegisterForm = (props) => {
   const [icon2, setIcon2] = useState({ val: "close", color: "red" });
   const [icon3, setIcon3] = useState({ val: "close", color: "red" });
   const [icon4, setIcon4] = useState({ val: "close", color: "red" });
+  const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   // const history = useHistory();
 
   const handleRegistration = (event) => {
@@ -192,7 +199,11 @@ const RegisterForm = (props) => {
           type="submit"
           color="primary"
           variant="contained"
-          style={{ margin: "3%", width: "30%" }}
+          style={
+            matches
+              ? { margin: "3%", width: "30%" }
+              : { margin: "3%", width: "50%" }
+          }
           disabled={joinBtnDisable}
         >
           Join now
