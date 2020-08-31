@@ -24,6 +24,7 @@ import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import ViewPhotos from "./ViewPhotos";
+import ReadMoreReact from "read-more-react";
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -267,13 +268,20 @@ const Post = () => {
     </div>
   );
   const data =
-    "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.";
+    "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.";
 
   const cardData = (
-    <CardContent>
-      <Typography variant="body2" color="textSecondary" component="p">
+    <CardContent style={{ textAlign: "justify" }}>
+      <ReadMoreReact
+        text={data}
+        min={200}
+        ideal={250}
+        max={500}
+        readMoreText="see more"
+      />
+      {/* <Typography variant="body2" color="textSecondary" component="p">
         {data}
-      </Typography>
+      </Typography> */}
     </CardContent>
   );
 
@@ -383,6 +391,7 @@ const Post = () => {
       "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
       "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1052&q=80",
       "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1002&q=80",
+      "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
     ],
     header: cardHeader,
     data: cardData,

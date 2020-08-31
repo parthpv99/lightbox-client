@@ -18,7 +18,6 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // console.log("didmouunt");
     const at = "access-token";
     const token = getCookies(at);
     if (token != null) {

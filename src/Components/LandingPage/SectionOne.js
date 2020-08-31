@@ -4,7 +4,6 @@ import { Container, Grid, Typography, useMediaQuery } from "@material-ui/core";
 import group from "../../assets/section-1.jpg";
 import Avatar from "@material-ui/core/Avatar";
 import DisabledLandingButton from "./DisabledLandingButton";
-import { red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -6,13 +6,13 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { withRouter } from "react-router-dom";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { useMediaQuery, Grid } from "@material-ui/core";
 import NavigationMenu from "./NavigationMenu";
+import CreateMenu from "./CreateMenu";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -68,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = (props) => {
   const classes = useStyles();
-  const menuId = "primary-search-account-menu";
   let matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
 
   return (
@@ -115,9 +114,7 @@ const Navbar = (props) => {
                     <SearchIcon />
                   </IconButton>
                 )}
-                <IconButton color="inherit">
-                  <AddCircleIcon />
-                </IconButton>
+                <CreateMenu />
                 <IconButton
                   aria-label="show 17 new notifications"
                   color="inherit"
@@ -126,13 +123,7 @@ const Navbar = (props) => {
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>
-                <IconButton
-                  edge="end"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  color="inherit"
-                >
+                <IconButton edge="end" color="inherit">
                   <AccountCircle />
                 </IconButton>
               </div>

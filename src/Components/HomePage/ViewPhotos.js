@@ -7,7 +7,8 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
-import { Grid, Card } from "@material-ui/core";
+import { Grid, Card, useMediaQuery } from "@material-ui/core";
+import CustomCarousel from "./CustomCarousel";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -33,6 +34,39 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export const ViewPhotos = ({ closeImages, data }) => {
   const classes = useStyles();
+  const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+
+  const carouselGrid = (
+    <Grid item xs={matches ? 8 : 12}>
+      {/* {data.images.map((image, index) => {
+    return <img src={image} key={index} width="100%" alt="" />;
+  })} */}
+      <CustomCarousel images={data.images} />
+    </Grid>
+  );
+
+  const dataGrid = (
+    <Grid item xs={matches ? 4 : 12}>
+      <Card elevation={0}>
+        {data.header}
+        <div
+          style={
+            matches
+              ? { height: "75vh", overflow: "auto" }
+              : { height: "32vh", overflow: "auto" }
+          }
+        >
+          {data.data}
+          {data.data}
+          {data.data}
+          {data.data}
+          {data.data}
+          {data.data}
+          {data.data}
+        </div>
+      </Card>
+    </Grid>
+  );
 
   return (
     <div>
@@ -62,17 +96,15 @@ export const ViewPhotos = ({ closeImages, data }) => {
           </Toolbar>
         </AppBar>
         <Grid container>
-          <Grid item xs={8}>
-            {data.images.map((image, index) => {
-              return <img src={image} key={index} width="100%" alt="" />;
-            })}
-          </Grid>
-          <Grid item xs={4} className={classes.Description}>
-            <Card elevation={0}>
-              {data.header}
-              {data.data}
-            </Card>
-          </Grid>
+          {matches ? (
+            <>
+              {carouselGrid} {dataGrid}
+            </>
+          ) : (
+            <>
+              {dataGrid} {carouselGrid}
+            </>
+          )}
         </Grid>
       </Dialog>
     </div>
