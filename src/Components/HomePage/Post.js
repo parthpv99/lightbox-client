@@ -57,7 +57,8 @@ const StyledBadge = withStyles((theme) => ({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 600,
+    width: 600,
+    maxWidth: "90%",
     margin: 10,
     //remove this in future
     [theme.breakpoints.down("sm")]: {
@@ -165,7 +166,7 @@ const Post = () => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
+  // const fd = new FormData();
   const cardHeader = (
     <CardHeader
       avatar={
@@ -268,20 +269,46 @@ const Post = () => {
     </div>
   );
   const data =
-    "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.";
+    "This impressive paella #bellaciao is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like. #datascience #python #developer";
+
+  const formatHashtags = (string) => {
+    return string
+      .split(/((?:^|\s)(?:#[a-z\d-]+))/gi)
+      .filter(Boolean)
+      .map((v, i) => {
+        if (v.includes("#")) {
+          return (
+            <Typography
+              component="span"
+              variant="body1"
+              key={i}
+              color="primary"
+            >
+              {v}
+            </Typography>
+          );
+        } else {
+          return (
+            <Typography component="span" key={i}>
+              {v}
+            </Typography>
+          );
+        }
+      });
+  };
 
   const cardData = (
     <CardContent style={{ textAlign: "justify" }}>
-      <ReadMoreReact
-        text={data}
+      {/* <ReadMoreReact
+        text={formatHashtags(data)}
         min={200}
         ideal={250}
         max={500}
         readMoreText="see more"
-      />
-      {/* <Typography variant="body2" color="textSecondary" component="p">
-        {data}
-      </Typography> */}
+      /> */}
+      <Typography variant="body2" color="textSecondary" component="p">
+        {formatHashtags(data)}
+      </Typography>
     </CardContent>
   );
 
@@ -387,7 +414,7 @@ const Post = () => {
 
   const allData = {
     images: [
-      "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1007&q=80",
+      "https://kosmart.eu/10717-home_default/very-small-size-sphere-shape-titanium-earrings-in-crystal-white-pearl.jpg",
       "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
       "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1052&q=80",
       "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1002&q=80",

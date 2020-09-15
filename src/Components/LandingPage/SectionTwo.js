@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     width: "80%",
     height: "80%",
     backgroundColor: "transparent",
+    marginBottom: "5%",
     [theme.breakpoints.down("sm")]: {
       margin: "0 auto",
     },
@@ -42,7 +43,7 @@ const SectionTwo = () => {
   return (
     <div className={classes.root}>
       <Container>
-        <Grid container spacing={10} alignItems="center">
+        <Grid container alignItems="center">
           {matches && avatar}
           <Grid item xs={12} sm={6}>
             <Typography variant="h6" className={classes.heading}>

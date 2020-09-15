@@ -95,10 +95,11 @@ export const ViewPhotos = ({ closeImages, data }) => {
             </Typography>
           </Toolbar>
         </AppBar>
-        <Grid container>
+        <Grid container direction="row" justify="center" alignItems="center">
           {matches ? (
             <>
-              {carouselGrid} {dataGrid}
+              {carouselGrid}
+              {dataGrid}
             </>
           ) : (
             <>

@@ -4,22 +4,23 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
+// import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
 import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import { withRouter } from "react-router-dom";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { useMediaQuery, Grid } from "@material-ui/core";
 import NavigationMenu from "./NavigationMenu";
 import CreateMenu from "./CreateMenu";
+import ProfileMenu from "./ProfileMenu";
+import EditProfileDialog from "../ProfilePage/EditProfileDialog";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
   title: {
-    display: "block",
+    display: "flex",
   },
   search: {
     position: "relative",
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   searchIcon: {
-    padding: theme.spacing(0, 2),
+    padding: theme.spacing(0, 1),
     height: "100%",
     position: "absolute",
     pointerEvents: "none",
@@ -45,30 +46,24 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
+  // inputRoot: {
+  //   color: "inherit",
+  // },
+  // inputInput: {
+  //   padding: theme.spacing(1, 1, 1, 0),
+  //   // vertical padding + font size from searchIcon
+  //   paddingLeft: `calc(1em + ${theme.spacing(3)}px)`,
+  //   transition: theme.transitions.create("width"),
+  //   width: "120px",
+  // },
   sectionDesktop: {
-    // display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
-    },
+    display: "flex",
   },
 }));
 
 const Navbar = (props) => {
   const classes = useStyles();
-  let matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+  let matches = useMediaQuery((theme) => theme.breakpoints.up("md"));
 
   return (
     <div>
@@ -84,7 +79,7 @@ const Navbar = (props) => {
               <Typography className={classes.title} variant="h5" noWrap>
                 Lightbox
               </Typography>
-              {matches && (
+              {/* {matches && (
                 <div className={classes.search}>
                   <div className={classes.searchIcon}>
                     <SearchIcon />
@@ -97,7 +92,7 @@ const Navbar = (props) => {
                     }}
                   />
                 </div>
-              )}
+              )} */}
             </Grid>
             {matches && (
               <Grid item xs={6}>
@@ -109,11 +104,9 @@ const Navbar = (props) => {
             {/* <div className={classes.grow} /> */}
             <Grid item xs={matches ? 3 : 6} container justify="flex-end">
               <div className={classes.sectionDesktop}>
-                {!matches && (
-                  <IconButton color="inherit">
-                    <SearchIcon />
-                  </IconButton>
-                )}
+                <IconButton color="inherit">
+                  <SearchIcon />
+                </IconButton>
                 <CreateMenu />
                 <IconButton
                   aria-label="show 17 new notifications"
@@ -123,9 +116,8 @@ const Navbar = (props) => {
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>
-                <IconButton edge="end" color="inherit">
-                  <AccountCircle />
-                </IconButton>
+                <ProfileMenu />
+                <EditProfileDialog />
               </div>
             </Grid>
           </Grid>

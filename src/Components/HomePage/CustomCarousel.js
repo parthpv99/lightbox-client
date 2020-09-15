@@ -12,10 +12,11 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 10,
       marginBottom: 5,
     },
+    // height: "90vh",
   },
   img: {
     cursor: "pointer",
-    height: "90vh",
+    // height: "calc(100%-1px)",
     margin: "auto",
     maxWidth: "100%",
     left: 0,
@@ -43,7 +44,13 @@ const CustomCarousel = (props) => {
       navButtonsAlwaysVisible={true}
     >
       {props.images.map((image, index) => (
-        <img key={index} className={classes.img} src={image} alt="" />
+        <img
+          key={index}
+          style={{ maxHeight: "calc(100vh - 64px)" }}
+          className={classes.img}
+          src={image}
+          alt=""
+        />
       ))}
     </Carousel>
   );

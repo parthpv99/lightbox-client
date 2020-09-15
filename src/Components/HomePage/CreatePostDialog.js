@@ -37,6 +37,27 @@ const useStyles = makeStyles((theme) => ({
     outlineColor: "transparent",
     fontFamily: "roboto",
     fontSize: "1.2rem",
+    "&::-webkit-scrollbar": {
+      width: "0.6rem",
+    },
+    "&::-webkit-scrollbar-track:hover": {
+      boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+      webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+      background: "rgba(180,180,180,0.2)",
+      borderRadius: "8px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      // backgroundColor: "rgba(0,0,0,.1)",
+      // outline: "1px solid slategrey",
+      // background: "#B4B4B4",
+      background: theme.palette.primary.main,
+      borderRadius: "8px",
+    },
+    "&::-webkit-scrollbar-thumb:hover": {
+      // background: "#A3A3A3",
+      background: "#004A74",
+      cursor: "pointer",
+    },
   },
   input: {
     display: "none",
@@ -51,6 +72,29 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     left: "88%",
     transform: "translate(0%, 10%)",
+  },
+  dialog: {
+    "&::-webkit-scrollbar": {
+      width: "0.6rem",
+    },
+    "&::-webkit-scrollbar-track:hover": {
+      boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+      webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+      background: "rgba(180,180,180,0.2)",
+      borderRadius: "8px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      // backgroundColor: "rgba(0,0,0,.1)",
+      // outline: "1px solid slategrey",
+      // background: "#B4B4B4",
+      background: theme.palette.primary.main,
+      borderRadius: "8px",
+    },
+    "&::-webkit-scrollbar-thumb:hover": {
+      // background: "#A3A3A3",
+      background: "#004A74",
+      cursor: "pointer",
+    },
   },
 }));
 
@@ -95,7 +139,7 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
     images && description ? setOpenWarning(true) : handleClickOpen();
   };
 
-  const handleClose = (event) => {
+  const handleClose = () => {
     setDescription("");
     setImages([]);
     handleClickOpen();
@@ -105,7 +149,7 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
     setOpenWarning(false);
   };
 
-  const handleWarningDiscard = (event) => {
+  const handleWarningDiscard = () => {
     setOpenWarning(false);
     setDescription("");
     setImages([]);
@@ -129,6 +173,7 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
 
     setImages(imgs);
   };
+
   const WarningDialog = (
     <Dialog
       open={openWarning}
@@ -165,7 +210,7 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
       >
         Create A Post
       </DialogTitle>
-      <DialogContent>
+      <DialogContent className={classes.dialog}>
         {WarningDialog}
         <TextareaAutosize
           rowsMin={15}
