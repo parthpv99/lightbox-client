@@ -28,7 +28,7 @@ const styles = (theme) => ({
 
 const useStyles = makeStyles((theme) => ({
   action: {
-    flexGrow: 1,
+    // flexGrow: 1,
   },
 }));
 
@@ -113,7 +113,7 @@ const EditProfileDialog = ({ open, handleClickOpen }) => {
       <DialogTitle
         id="customized-dialog-title"
         onClose={handleWarningClickOpen}
-        style={{ color: "black" }}
+        style={{ color: "black", textAlign: "center" }}
       >
         Edit Profile
       </DialogTitle>

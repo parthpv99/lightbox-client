@@ -117,7 +117,7 @@ const Navbar = (props) => {
                   </Badge>
                 </IconButton>
                 <ProfileMenu />
-                <EditProfileDialog />
+                <EditProfileDialog open={false} />
               </div>
             </Grid>
           </Grid>
