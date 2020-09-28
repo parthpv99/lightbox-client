@@ -267,3 +267,8 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
 };
 
 export default CreatePostDialog;
+
+// const imgs = [...images];
+//     imgs.splice(index, 1);
+
+//     setImages(imgs);

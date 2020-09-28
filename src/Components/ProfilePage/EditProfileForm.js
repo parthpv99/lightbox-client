@@ -6,7 +6,6 @@ import {
   withStyles,
   makeStyles,
   TextField,
-  Divider,
   Select,
   MenuItem,
   InputBase,
@@ -14,6 +13,8 @@ import {
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import user from "../../assets/user.png";
+import { skillSet as SKILLSET } from "../../constants";
+import Chip from "../Chip";
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -89,6 +90,11 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: fade(theme.palette.primary.main, 0.1),
       color: theme.palette.primary.main,
     },
+    overflow: "hidden",
+  },
+  Chip: {
+    margin: "2px",
+    fontWeight: "-moz-initial",
   },
 }));
 
@@ -99,9 +105,29 @@ const EditProfileForm = () => {
   const [title, setTitle] = useState("");
   const [branch, setBranch] = useState("");
   const [semester, setSemester] = useState(null);
-
+  const [skillSet, setSkillSet] = useState([]);
   const submitHandler = () => {
     console.log("submitted");
+  };
+
+  const semesters = [1, 2, 3, 4, 5, 6, 7, 8];
+  const branchList = [
+    "Computer Science",
+    "Information Technology",
+    "Electronics & Communication",
+    "Electrical & Electronics",
+    "Chemical",
+    "Mechanical",
+    "Civil",
+  ];
+
+  const fetchState = (label, isSelec) => {
+    if (!isSelec) {
+      skillSet.push(label);
+      setSkillSet([...skillSet]);
+    } else {
+      setSkillSet([...skillSet.filter((skill) => skill !== label)]);
+    }
   };
 
   return (
@@ -197,12 +223,14 @@ const EditProfileForm = () => {
           container
           direction="row"
           justify="space-between"
+          // style={{ margin: "auto" }}
           alignItems="center"
         >
           <Grid item md={5}>
             <Select
               id="semester"
               value={semester}
+              label="Semester"
               InputLabelProps={{
                 className: classes.textFieldInputLabel,
               }}
@@ -211,40 +239,23 @@ const EditProfileForm = () => {
               }}
               onChange={(e) => setSemester(e.target.value)}
               input={<BootstrapInput />}
+              style={{ width: "60%" }}
             >
-              <MenuItem className={classes.menu} value="">
-                Select Semester
+              <MenuItem className={classes.menu} value="" selected>
+                Select Branch
               </MenuItem>
-              <MenuItem className={classes.menu} value={1}>
-                1
-              </MenuItem>
-              <MenuItem className={classes.menu} value={2}>
-                2
-              </MenuItem>
-              <MenuItem className={classes.menu} value={3}>
-                3
-              </MenuItem>
-              <MenuItem className={classes.menu} value={4}>
-                4
-              </MenuItem>
-              <MenuItem className={classes.menu} value={5}>
-                5
-              </MenuItem>
-              <MenuItem className={classes.menu} value={6}>
-                6
-              </MenuItem>
-              <MenuItem className={classes.menu} value={7}>
-                7
-              </MenuItem>
-              <MenuItem className={classes.menu} value={8}>
-                8
-              </MenuItem>
+              {semesters.map((sem, index) => (
+                <MenuItem className={classes.menu} key={index} value={sem}>
+                  {sem}
+                </MenuItem>
+              ))}
             </Select>
           </Grid>
           <Grid item md={5}>
             <Select
               id="branch"
               value={branch}
+              label="Branch"
               InputLabelProps={{
                 className: classes.textFieldInputLabel,
               }}
@@ -253,22 +264,16 @@ const EditProfileForm = () => {
               }}
               onChange={(e) => setBranch(e.target.value)}
               input={<BootstrapInput />}
+              style={{ float: "right", width: "60%" }}
             >
-              <MenuItem className={classes.menu} value="">
+              <MenuItem className={classes.menu} value="" selected>
                 Select Branch
               </MenuItem>
-              <MenuItem className={classes.menu} value="CE">
-                Computer
-              </MenuItem>
-              <MenuItem className={classes.menu} value="IT">
-                Information Technology
-              </MenuItem>
-              <MenuItem className={classes.menu} value="EC">
-                Electronics Comm.
-              </MenuItem>
-              <MenuItem className={classes.menu} value="EE">
-                Electrical
-              </MenuItem>
+              {branchList.map((branch, index) => (
+                <MenuItem className={classes.menu} key={index} value={branch}>
+                  {branch}
+                </MenuItem>
+              ))}
             </Select>
           </Grid>
         </Grid>
@@ -279,18 +284,14 @@ const EditProfileForm = () => {
             label="College"
             value="Vishwakarma Government Engingeering College"
             variant="outlined"
-            // value={title}
-            // InputLabelProps={{
-            //   className: classes.textFieldInputLabel,
-            // }}
-            // inputProps={{
-            //   className: classes.textFieldInput,
-            // }}
             className={classes.textField}
-            // onChange={(e) => setTitle(e.target.value)}
-            // required
             disabled
           />
+        </Grid>
+        <Grid container item>
+          {SKILLSET.map((skill, index) => (
+            <Chip label={skill} key={index} onClick={fetchState} />
+          ))}
         </Grid>
       </Grid>
     </form>
