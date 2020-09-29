@@ -199,11 +199,6 @@ const Post = () => {
       }}
       subheader="Data Analyst | Semester 7"
       subheadertime="10 min."
-      subheaderTimeTypographyProps={{
-        style: {
-          fontSize: 10,
-        },
-      }}
     />
   );
 
