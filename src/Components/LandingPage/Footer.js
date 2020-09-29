@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Grid, useMediaQuery } from "@material-ui/core";
-import { Container } from "@material-ui/core";
+import { Grid, useMediaQuery, Container } from "@material-ui/core";
 
 const useStyle = makeStyles((theme) => ({
   footer: {
@@ -11,6 +10,12 @@ const useStyle = makeStyles((theme) => ({
     fontSize: "1.3rem",
     [theme.breakpoints.down("sm")]: {
       fontSize: "0.8rem",
+    },
+  },
+  links:{
+    fontSize: "1rem",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.7rem",
     },
   },
 }));
@@ -30,9 +35,20 @@ const Footer = () => {
             <Grid container spacing={1} justify="space-evenly">
               <Grid item sm={3}>
                 <p>About Us</p>
+                <div className={classes.links}>
+                  <p> Our Services </p>
+                  <p> Testimonials </p>
+                  <p> Contact Us </p>
+                  <p> Careers </p> 
+                  <p> Team LightBox </p> 
+                </div>
               </Grid>
               <Grid item sm={3}>
-                <p>Contact Us</p>
+                <p> Useful Links </p>
+                <div className={classes.links}>
+                  <p> Projects </p>
+                  <p> Groups </p> 
+                </div>
               </Grid>
             </Grid>
           </Grid>

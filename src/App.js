@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import theme from "./theme";
 import navbartheme from "./navbartheme";
 import LandingPage from "./Components/LandingPage/LandingPage";
@@ -66,7 +66,7 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
+    <Router>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {isLoggedIn && (
@@ -84,7 +84,7 @@ function App() {
           <Route path="/">{isAuthenticated}</Route>
         </Switch>
       </ThemeProvider>
-    </BrowserRouter>
+    </Router>
   );
 }
 

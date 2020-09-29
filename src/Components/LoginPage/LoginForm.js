@@ -23,11 +23,7 @@ const LoginForm = (props) => {
       !password.length < 8
     ) {
       const user = JSON.stringify({ email: email, password: password });
-      // const usr = JSON.stringify({
-      //   email: "nikhilkoshty@gmail.com",
-      //   password: "123456789",
-      // });
-
+    
       fetch(kBaseUrl + "login", {
         body: user,
         mode: "cors",
@@ -38,7 +34,6 @@ const LoginForm = (props) => {
         method: "POST",
       })
         .then((res) => {
-          // console.log(res);
           if (res.status === 200) {
             let accessToken = "access-token";
             let token = res.headers.get(accessToken);
@@ -69,6 +64,7 @@ const LoginForm = (props) => {
       <TextField
         id="email"
         fullWidth
+        autoFocus
         label="Email id"
         variant="outlined"
         style={{ margin: "2% auto" }}

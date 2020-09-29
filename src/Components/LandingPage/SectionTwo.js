@@ -1,8 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Container, Grid, Typography, useMediaQuery } from "@material-ui/core";
+import { Container, Grid, Typography, useMediaQuery, Avatar } from "@material-ui/core";
 import group from "../../assets/section-2.jpg";
-import Avatar from "@material-ui/core/Avatar";
 import DisabledLandingButton from "./DisabledLandingButton";
 
 const useStyles = makeStyles((theme) => ({

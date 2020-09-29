@@ -1,8 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Container, Grid, Typography } from "@material-ui/core";
+import { Container, Grid, Typography, Avatar } from "@material-ui/core";
 import group from "../../assets/section-1.jpg";
-import Avatar from "@material-ui/core/Avatar";
 import DisabledLandingButton from "./DisabledLandingButton";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,8 +34,7 @@ const SectionOne = () => {
         <Grid container alignItems="center">
           <Grid item xs={12} sm={6}>
             <Typography variant="h6" className={classes.heading}>
-              Are you ready to kick start your <br /> professional journey in
-              college?{" "}
+              Are you ready to kick start your professional journey in College ?{" "}
             </Typography>
             <Grid container spacing={3}>
               <Grid item xs={12}>

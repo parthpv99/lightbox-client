@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, Grid, CardContent, Button } from "@material-ui/core";
 import LoginForm from "./LoginForm";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -41,7 +41,9 @@ const LoginPage = (props) => {
         <Card className={classes.card}>
           <CardContent>
             <Grid item>
-              <h1 className={classes.title}>Lightbox</h1>
+              <Link to="/" style={{textDecoration:"none"}}>
+                <h1 className={classes.title}>Lightbox</h1>
+              </Link>
             </Grid>
             <Grid container justify="center">
               <LoginForm setLogin={props.setLogin} />

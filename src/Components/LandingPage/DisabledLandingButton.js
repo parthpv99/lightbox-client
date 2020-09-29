@@ -1,8 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Grid, Button } from "@material-ui/core";
-import Icon from "@material-ui/core/Icon";
-// import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
+import { Grid, Button, Icon } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   disabledButton: {

@@ -1,11 +1,6 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import { fade } from "@material-ui/core/styles/colorManipulator";
-import { Container, useMediaQuery } from "@material-ui/core";
+import { makeStyles, fade } from "@material-ui/core/styles";
+import { AppBar, Toolbar, Typography, Button, Container, useMediaQuery } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -58,6 +53,7 @@ const LandingHeader = (props) => {
 
       <Button
         color="inherit"
+        variant="outlined"
         className={classes.btnspace}
         onClick={() => {
           props.history.push("/register");

@@ -1,9 +1,6 @@
 import React from "react";
-import IconButton from "@material-ui/core/IconButton";
+import {IconButton, MenuItem, makeStyles, fade, Menu} from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import { makeStyles, fade } from "@material-ui/core";
 import EditProfileDialog from "../ProfilePage/EditProfileDialog";
 
 const useStyles = makeStyles((theme) => ({

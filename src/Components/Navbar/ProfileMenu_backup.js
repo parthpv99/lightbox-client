@@ -1,7 +1,10 @@
 import React from "react";
-import {IconButton, Menu, MenuItem, makeStyles, fade} from "@material-ui/core";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import CreatePostDialog from "../HomePage/CreatePostDialog";
+import IconButton from "@material-ui/core/IconButton";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import { makeStyles, fade } from "@material-ui/core";
+import EditProfileDialog from "../ProfilePage/EditProfileDialog";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -13,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CreateMenu = () => {
+const ProfileMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
@@ -39,7 +42,7 @@ const CreateMenu = () => {
         onClick={handleClick}
         color="inherit"
       >
-        <AddCircleIcon />
+        <AccountCircleIcon />
       </IconButton>
       <Menu
         id="simple-menu"
@@ -49,18 +52,18 @@ const CreateMenu = () => {
         onClose={handleClose}
       >
         <MenuItem className={classes.menu} onClick={handleClickOpen}>
-          Create Post
+          Edit Profile
         </MenuItem>
         <MenuItem className={classes.menu} onClick={handleClose}>
-          Start Project
+          View Profile
         </MenuItem>
         <MenuItem className={classes.menu} onClick={handleClose}>
-          Write Blog
+          Logout
         </MenuItem>
+        <EditProfileDialog handleClickOpen={handleClickOpen} open={open} />
       </Menu>
-      <CreatePostDialog handleClickOpen={handleClickOpen} open={open} />
     </div>
   );
 };
 
-export default CreateMenu;
+export default ProfileMenu;
