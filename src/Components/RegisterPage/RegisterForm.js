@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Typography,
-  TextField,
-  Button,
-  Grid,
-  useMediaQuery,
-} from "@material-ui/core";
+import { Typography, TextField, Button, Grid, useMediaQuery } from "@material-ui/core";
 // import { useHistory } from "react-router-dom";
 import { kBaseUrl } from "../../constants";
 import { setCookies } from "../../utility";
@@ -24,18 +18,10 @@ const RegisterForm = (props) => {
 
   const handleRegistration = (event) => {
     event.preventDefault();
-    // if (
-    //    (((icon1.color === icon2.color) === icon3.color) === icon4.color) ===
-    //   "green"
-    // ) {
     setJoinBtnDisable(true);
     setError(false);
     const user = JSON.stringify({ email: email, password: password });
-    // const usr = JSON.stringify({
-    //   email: "nikhilkoshty@gmail.com",
-    //   password: "123456789",
-    // });
-
+    
     fetch(kBaseUrl + "register", {
       body: user,
       mode: "cors",
@@ -45,16 +31,11 @@ const RegisterForm = (props) => {
       credentials: "same-origin",
       method: "POST",
     })
-      // .then((response) => response.json())
       .then(async (res) => {
-        // console.log(res);
-        // const data = await res.json();
         if (res.status === 200) {
-          // console.log(obj.email);
           let accessToken = "access-token";
           let token = res.headers.get(accessToken);
           setCookies(accessToken, token);
-          // data.isProfileCompleted ? props.setLogin() : ;
         } else {
           if (res.status === 400) setError(true);
           else setError(true);
@@ -64,10 +45,6 @@ const RegisterForm = (props) => {
       .finally(() => {
         setJoinBtnDisable(false);
       });
-    // } else {
-    //   setJoinBtnDisable(false);
-    //   setError(true);
-    // }
   };
 
   const passwordHandler = (e) => {
@@ -97,6 +74,7 @@ const RegisterForm = (props) => {
       <TextField
         id="email"
         fullWidth
+        autoFocus
         label="Email id"
         variant="outlined"
         style={{ margin: "2% auto" }}
@@ -168,29 +146,6 @@ const RegisterForm = (props) => {
           </i>
           <p> Atleast one special character </p>
         </Grid>
-
-        {/* <Grid item sm={12}>
-          <ul style={{ listStyleType: "none" }}>
-            <li>
-              <i className="material-icons" style={{ fontSize: "1.2rem" }}>
-                {icon1}
-              </i>
-              Atleast 8 Characters
-            </li>
-            <li>
-              <i className="material-icons">{icon2}</i> Atleast one capital
-              alphabet
-            </li>
-            <li>
-              <i className="material-icons">{icon3}</i>
-              Atleast one number
-            </li>
-            <li>
-              <i className="material-icons">{icon4}</i>
-              Atleast one special character
-            </li>
-          </ul>
-        </Grid> */}
       </Grid>
 
       <Grid container justify="center">

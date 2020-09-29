@@ -1,6 +1,9 @@
 import React from "react";
-import {IconButton, Menu, MenuItem, makeStyles, fade} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import { makeStyles, fade } from "@material-ui/core";
 import CreatePostDialog from "../HomePage/CreatePostDialog";
 
 const useStyles = makeStyles((theme) => ({

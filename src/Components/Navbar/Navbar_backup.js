@@ -91,7 +91,7 @@ const Navbar = (props) => {
             </Grid>
             {matches && (
               <Grid item xs={6}>
-                <div>
+                <div style={{ marginLeft: "5%" }}>
                   <NavigationMenu history={props.history} />
                 </div>
               </Grid>

@@ -9,8 +9,7 @@ const HomePage = () => {
     <Box my={8}>
       <Grid container direction="column" alignContent="center">
         {matches && <CreatePostBox />}
-        {/* <CreatePostBox /> */}
-        <Post />
+        <Post /> 
         <Post />
         <Post />
         <Post />
