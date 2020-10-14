@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import theme from "./theme";
 import navbartheme from "./navbartheme";
 import LandingPage from "./Components/LandingPage/LandingPage";
@@ -13,6 +18,7 @@ import Navbar from "./Components/Navbar/Navbar";
 import ConnectionPage from "./Components/ConnectionPage/ConnectionPage";
 import ForumPage from "./Components/ForumPage/ForumPage";
 import ChatPage from "./Components/ChatPage/ChatPage";
+import ViewProfilePage from "./Components/ViewProfile/ViewProfilePage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -65,6 +71,10 @@ function App() {
     return isLoggedIn ? <ForumPage /> : <Redirect to="/login" />;
   };
 
+  const toViewProfilePage = () => {
+    return isLoggedIn ? <ViewProfilePage /> : <Redirect to="/login" />;
+  };
+
   return (
     <Router>
       <ThemeProvider theme={theme}>
@@ -81,6 +91,7 @@ function App() {
           <Route exact path="/forums" render={() => toForums()} />
           <Route exact path="/login" render={() => checkLogin()} />
           <Route exact path="/register" render={() => checkRegister()} />
+          <Route exact path="/viewprofile" render={() => toViewProfilePage()} />
           <Route path="/">{isAuthenticated}</Route>
         </Switch>
       </ThemeProvider>

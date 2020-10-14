@@ -57,12 +57,6 @@ export const ViewPhotos = ({ closeImages, data }) => {
           }
         >
           {data.data}
-          {data.data}
-          {data.data}
-          {data.data}
-          {data.data}
-          {data.data}
-          {data.data}
         </div>
       </Card>
     </Grid>

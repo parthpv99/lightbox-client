@@ -25,6 +25,7 @@ const Chip = (props) => {
   return (
     <span
       className={classes.chip}
+      key={props.key}
       style={{
         backgroundColor: isSelected ? "#006BA6" : "#ffffff",
         color: isSelected ? "#ffffff" : "#006BA6",

@@ -23,7 +23,7 @@ const LoginForm = (props) => {
       !password.length < 8
     ) {
       const user = JSON.stringify({ email: email, password: password });
-    
+
       fetch(kBaseUrl + "login", {
         body: user,
         mode: "cors",

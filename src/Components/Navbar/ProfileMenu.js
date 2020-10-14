@@ -1,7 +1,14 @@
 import React from "react";
-import {IconButton, MenuItem, makeStyles, fade, Menu} from "@material-ui/core";
+import {
+  IconButton,
+  MenuItem,
+  makeStyles,
+  fade,
+  Menu,
+} from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import EditProfileDialog from "../ProfilePage/EditProfileDialog";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -17,6 +24,7 @@ const ProfileMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
+  const history = useHistory();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -29,6 +37,11 @@ const ProfileMenu = () => {
   const handleClickOpen = () => {
     setAnchorEl(null);
     setOpen(!open);
+  };
+
+  const handleViewProfile = () => {
+    setAnchorEl(null);
+    history.push("/viewprofile");
   };
 
   return (
@@ -51,7 +64,7 @@ const ProfileMenu = () => {
         <MenuItem className={classes.menu} onClick={handleClickOpen}>
           Edit Profile
         </MenuItem>
-        <MenuItem className={classes.menu} onClick={handleClose}>
+        <MenuItem className={classes.menu} onClick={handleViewProfile}>
           View Profile
         </MenuItem>
         <MenuItem className={classes.menu} onClick={handleClose}>

@@ -11,6 +11,7 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import Typography from "@material-ui/core/Typography";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
+import axios from "axios";
 
 const styles = (theme) => ({
   root: {
@@ -132,6 +133,7 @@ const DialogActions = withStyles((theme) => ({
 const CreatePostDialog = ({ open, handleClickOpen }) => {
   const [openWarning, setOpenWarning] = React.useState(false);
   const [images, setImages] = React.useState([]);
+  const [fileData, setFileData] = React.useState([]);
   const [description, setDescription] = React.useState("");
   const classes = useStyles();
 
@@ -162,17 +164,78 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
 
   const displaySelectedImages = (event) => {
     const files = [...event.target.files];
-    const urls = files.map((url) => URL.createObjectURL(url));
+    let flag = false;
+    let sizeExceeded = false;
 
-    setImages(urls);
+    // const submitFile = async () => {
+    //   try {
+    //     if (!file) {
+    //       throw new Error('Select a file first!');
+    //     }
+
+    //     await axios.post(`/test-upload`, formData, {
+    //       headers: {
+    //         'Content-Type': 'multipart/form-data',
+    //       },
+    //     });
+    //     // handle success
+    //   } catch (error) {
+    //     // handle error
+    //   }
+    // };
+    // console.log(form);
+    const urls = files.map((url) => {
+      if (
+        url.type === "image/png" ||
+        url.type === "image/gif" ||
+        url.type === "image/jpeg" ||
+        url.type === "image/jpg"
+      ) {
+        console.log(url.size);
+        if (url.size >= 8388608) {
+          sizeExceeded = true;
+        }
+        return URL.createObjectURL(url);
+      } else {
+        flag = true;
+        return null;
+      }
+    });
+
+    const formData = new FormData();
+    const form = files.map((file, index) => {
+      formData.append("post_images", file);
+      return formData;
+    });
+    console.log("Form Data: ", form);
+    flag && alert("Only Image Files are Supported !");
+    sizeExceeded && alert("Please Select images smaller than 8 MB size!");
+    if (!flag && !sizeExceeded) {
+      setImages(urls);
+      setFileData(form);
+      console.log(fileData);
+    } else {
+      setImages(null);
+      setFileData(null);
+    }
   };
 
   const removeImage = (index) => {
     const imgs = [...images];
+    const fls = [...fileData];
     imgs.splice(index, 1);
-
+    fls.splice(index, 1);
     setImages(imgs);
+    setFileData(fls);
+    console.log(fileData);
   };
+
+  // const formData = new FormData();
+  // const form = images.map((file, index) => {
+  //   formData.append("post_images", file);
+  //   console.log(formData);
+  //   return formData;
+  // });
 
   const WarningDialog = (
     <Dialog
@@ -222,8 +285,9 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
           onChange={handleDescription}
         />
         <input
-          accept="image/*"
+          accept="image/png,image/gif,image/jpeg,image/jpg"
           className={classes.input}
+          name="post_images"
           id="icon-button-file"
           type="file"
           onChange={displaySelectedImages}
