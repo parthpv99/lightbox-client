@@ -53,6 +53,23 @@ const DialogTitle = withStyles(styles)((props) => {
 const DialogContent = withStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
+    "&::-webkit-scrollbar": {
+      width: "0.6rem",
+    },
+    "&::-webkit-scrollbar-track:hover": {
+      boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+      webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+      background: "rgba(180,180,180,0.2)",
+      borderRadius: "8px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      background: theme.palette.primary.main,
+      borderRadius: "8px",
+    },
+    "&::-webkit-scrollbar-thumb:hover": {
+      background: "#004A74",
+      cursor: "pointer",
+    },
   },
 }))(MuiDialogContent);
 

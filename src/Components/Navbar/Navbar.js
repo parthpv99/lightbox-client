@@ -1,6 +1,15 @@
 import React from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
-import {AppBar, Toolbar, IconButton, Typography, Badge, useMediaQuery, Grid} from "@material-ui/core";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Badge,
+  useMediaQuery,
+  Grid,
+  Box,
+} from "@material-ui/core";
 // import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import NotificationsIcon from "@material-ui/icons/Notifications";
@@ -9,6 +18,8 @@ import NavigationMenu from "./NavigationMenu";
 import CreateMenu from "./CreateMenu";
 import ProfileMenu from "./ProfileMenu";
 import EditProfileDialog from "../ProfilePage/EditProfileDialog";
+import logo from "../../assets/logo.png";
+import TempTabBar from "./TempTabBar";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -54,6 +65,10 @@ const useStyles = makeStyles((theme) => ({
   sectionDesktop: {
     display: "flex",
   },
+  img: {
+    width: 35,
+    height: 35,
+  },
 }));
 
 const Navbar = (props) => {
@@ -70,8 +85,16 @@ const Navbar = (props) => {
             // justify="space-between"
             alignItems="center"
           >
-            <Grid item xs={matches ? 3 : 6} container>
-              <Typography className={classes.title} variant="h5" noWrap>
+            <Grid item xs={matches ? 2 : 6} container alignItems="center">
+              <Box component="span">
+                <img src={logo} alt="" className={classes.img} />
+              </Box>
+              <Typography
+                component="span"
+                className={classes.title}
+                variant="h5"
+                noWrap
+              >
                 Lightbox
               </Typography>
               {/* {matches && (
@@ -90,10 +113,9 @@ const Navbar = (props) => {
               )} */}
             </Grid>
             {matches && (
-              <Grid item xs={6}>
-                <div>
-                  <NavigationMenu history={props.history} />
-                </div>
+              <Grid item xs={7}>
+                {/* <TempTabBar /> */}
+                <NavigationMenu history={props.history} />
               </Grid>
             )}
             {/* <div className={classes.grow} /> */}

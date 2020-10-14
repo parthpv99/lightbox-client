@@ -1,30 +1,33 @@
-import React from "react";
-import { makeStyles, withStyles, fade } from "@material-ui/core/styles";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Collapse,
+  Divider,
+  fade,
+  Grid,
+  IconButton,
+  InputBase,
+  makeStyles,
+  Paper,
+  Typography,
+  withStyles,
+} from "@material-ui/core";
 import clsx from "clsx";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
-import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import React from "react";
+import PostData from "./PostData";
+import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import PublishIcon from "@material-ui/icons/Publish";
 import CommentIcon from "@material-ui/icons/Comment";
 import ShareIcon from "@material-ui/icons/Share";
 import SendIcon from "@material-ui/icons/Send";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import user from "../../assets/user.png";
-import Badge from "@material-ui/core/Badge";
 import classNames from "classnames";
-import InputBase from "@material-ui/core/InputBase";
-import Paper from "@material-ui/core/Paper";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import ViewPhotos from "./ViewPhotos";
-import PostData from "./PostData";
+import CardHeader from "@material-ui/core/CardHeader/CardHeader";
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -57,7 +60,6 @@ const StyledBadge = withStyles((theme) => ({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // width: 600,
     margin: "10px 40px 10px 40px",
     [theme.breakpoints.down("sm")]: {
       margin: 10,
@@ -141,11 +143,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Post = () => {
+function Project() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const [upvoted, setUpvoted] = React.useState(false);
-  const [openImages, setOpenImages] = React.useState(false);
+  const [requested, setrequested] = React.useState(false);
 
   const btnClass = classNames(
     classes.btnspace,
@@ -161,10 +163,17 @@ const Post = () => {
     })
   );
 
+  const btnRequest = classNames(
+    classes.btnspace,
+    clsx(classes.upvote, {
+      [classes.expandOpen]: requested,
+    })
+  );
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  // const fd = new FormData();
+
   const cardHeader = (
     <CardHeader
       avatar={
@@ -200,71 +209,60 @@ const Post = () => {
     />
   );
 
-  const imageHandler = () => {
-    setOpenImages(!openImages);
-  };
-
-  const totalImages = 10;
-  const cardMedia = (
-    <div>
-      <Grid container>
-        <Grid item xs={totalImages > 4 || totalImages === 2 ? 6 : 12}>
-          <CardMedia
-            className={classes.media}
-            onClick={imageHandler}
-            image="https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1007&q=80"
-          />
-        </Grid>
-        {totalImages > 1 ? (
-          <Grid item xs={totalImages > 1 && totalImages !== 4 ? 6 : 4}>
-            <CardMedia
-              className={classes.media}
-              onClick={imageHandler}
-              image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-            />
-          </Grid>
-        ) : null}
-        {totalImages > 2 ? (
-          <Grid item xs={totalImages === 3 ? 6 : 4}>
-            <CardMedia
-              className={classes.media}
-              onClick={imageHandler}
-              image="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1052&q=80"
-            />
-          </Grid>
-        ) : null}
-        {totalImages > 3 ? (
-          <Grid item xs={4}>
-            <CardMedia
-              className={classes.media}
-              onClick={imageHandler}
-              image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1002&q=80"
-            />
-          </Grid>
-        ) : null}
-        {totalImages > 4 ? (
-          <Grid item xs={4}>
-            <CardMedia
-              className={classes.media}
-              onClick={imageHandler}
-              image="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1052&q=80"
-            >
-              {/* <span className={classes.extendedMedia}>+{totalImages - 5}</span> */}
-              {totalImages > 5 ? (
-                <Typography variant="h6" className={classes.extendedMedia}>
-                  +{totalImages - 5}
-                </Typography>
-              ) : null}
-            </CardMedia>
-          </Grid>
-        ) : null}
-      </Grid>
-    </div>
-  );
   const data =
     "This impressive paella #bellaciao is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like. #datascience #python #developer";
 
-  const cardData = <PostData data={data} />;
+  const cardData = (
+    <CardContent>
+      <Grid
+        container
+        direction="column"
+        justify="flex-start"
+        alignItems="flex-start"
+      >
+        <Grid item>
+          <Typography variant="h6">Xender like application</Typography>
+        </Grid>
+        <Grid item>
+          <PostData data={data} />
+        </Grid>
+        <Grid item>
+          <Typography variant="h6" style={{ fontSize: "1.05rem" }}>
+            Current Team:
+          </Typography>
+        </Grid>
+        {/* Loop here */}
+        <Grid item>
+          <Typography variant="body1" style={{ margin: 2, marginLeft: 15 }}>
+            {"name: Technology"}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant="body1" style={{ margin: 2, marginLeft: 15 }}>
+            {"name: Technology"}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant="body1" style={{ margin: 2, marginLeft: 15 }}>
+            {"name: Technology"}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography
+            variant="h6"
+            style={{ fontSize: "1.05rem", marginTop: 10 }}
+          >
+            Requirements:
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant="body1" style={{ margin: 2, marginLeft: 15 }}>
+            {"Technology: requirement details"}
+          </Typography>
+        </Grid>
+      </Grid>
+    </CardContent>
+  );
 
   const commentHandler = (e) => {
     e.preventDefault();
@@ -272,6 +270,10 @@ const Post = () => {
 
   const upvoteHandler = () => {
     setUpvoted(!upvoted);
+  };
+
+  const requestHandler = () => {
+    setrequested(!requested);
   };
 
   const commentBox = (
@@ -301,7 +303,7 @@ const Post = () => {
   const cardAction = (
     <CardActions className={classes.actions}>
       <Grid container>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <Button
             fullWidth
             aria-label="upvote"
@@ -314,7 +316,20 @@ const Post = () => {
             </Typography>
           </Button>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
+          <Button
+            fullWidth
+            aria-label="request"
+            className={btnRequest}
+            onClick={requestHandler}
+          >
+            <GroupAddIcon />{" "}
+            <Typography variant="button" style={{ marginLeft: 10 }}>
+              {requested ? "Requested" : "Request"}
+            </Typography>
+          </Button>
+        </Grid>
+        <Grid item xs={3}>
           <Button
             fullWidth
             aria-label="comment"
@@ -328,7 +343,7 @@ const Post = () => {
             </Typography>
           </Button>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <Button fullWidth aria-label="share" className={classes.btnspace}>
             <ShareIcon />{" "}
             <Typography variant="button" style={{ marginLeft: 10 }}>
@@ -366,26 +381,11 @@ const Post = () => {
     </Paper>
   );
 
-  const allData = {
-    images: [
-      "https://kosmart.eu/10717-home_default/very-small-size-sphere-shape-titanium-earrings-in-crystal-white-pearl.jpg",
-      "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
-      "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1052&q=80",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1002&q=80",
-      "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
-    ],
-    header: cardHeader,
-    data: cardData,
-  };
-
   return (
     <Card className={classes.root}>
       {cardHeader}
       {cardData}
-      {cardMedia}
       <Divider style={{ margin: 8, marginBottom: 0 }} />
-      {openImages && <ViewPhotos closeImages={imageHandler} data={allData} />}
-      {/*pass post photos in above component*/}
       {cardAction}
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <Divider style={{ marginLeft: 10, marginRight: 10 }} />
@@ -398,6 +398,6 @@ const Post = () => {
       </Collapse>
     </Card>
   );
-};
+}
 
-export default Post;
+export default Project;
