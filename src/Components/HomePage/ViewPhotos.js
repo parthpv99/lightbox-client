@@ -78,7 +78,7 @@ export const ViewPhotos = ({ closeImages, data }) => {
           <Toolbar>
             <IconButton
               edge="start"
-              color="default"
+              color="inherit"
               onClick={closeImages}
               aria-label="close"
             >

@@ -20,16 +20,16 @@ function ViewProfilePage() {
       >
         {matches && (
           <Grid item xs={3}>
-            <UserDetailsCard />
+            <UserDetailsCard self={true} />
           </Grid>
         )}
         <Grid item xs={matches ? 6 : 12}>
           <Grid container direction="column" spacing={3}>
             <Grid item>
-              <DashboardCard />
+              <DashboardCard self={true} />
             </Grid>
             <Grid item>
-              <SkillsCard />
+              <SkillsCard self={true} />
             </Grid>
             <Grid item>
               <PageHeading

@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "2px 4px",
     display: "flex",
     alignItems: "center",
-    background: "rgba(255,255,255,0.4)",
+    background: "rgba(255,255,255,0.2)",
     border: `1px solid ${theme.palette.primary.main}`,
     margin: "10px 0px 20px 0px",
   },
@@ -25,11 +25,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Searchbar({ hintText, handleSearch }) {
-  const [search, setSearch] = useState("");
-
   const searchHandler = (e) => {
     e.preventDefault();
-    handleSearch(search);
+    handleSearch(e.target.value);
   };
 
   const classes = useStyles();
@@ -44,10 +42,10 @@ function Searchbar({ hintText, handleSearch }) {
         <InputBase
           className={classes.input}
           placeholder={hintText}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={searchHandler}
           inputProps={{ "aria-label": `${hintText}` }}
         />
-        <IconButton
+        {/* <IconButton
           type="submit"
           color="primary"
           className={classes.iconButton}
@@ -55,7 +53,7 @@ function Searchbar({ hintText, handleSearch }) {
           onClick={searchHandler}
         >
           <SearchIcon />
-        </IconButton>
+        </IconButton> */}
       </Paper>
     </div>
   );

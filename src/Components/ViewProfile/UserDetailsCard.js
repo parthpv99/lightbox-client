@@ -1,3 +1,4 @@
+import React, { useContext, useState } from "react";
 import {
   Avatar,
   Badge,
@@ -7,10 +8,10 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
-import React, { useState } from "react";
 import user from "../../assets/user.png";
 import EditIcon from "@material-ui/icons/Edit";
 import EditProfileDialog from "../ProfilePage/EditProfileDialog";
+import { UserContext } from "../../Context/UserContext";
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -41,17 +42,23 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.5rem",
     fontWeight: "bold",
     paddingBottom: 0,
+    color: theme.palette.primary.main,
   },
   college: {
     fontSize: "1.1rem",
     fontWeight: 500,
     textAlign: "center",
   },
+  text: {
+    paddingBottom: 0,
+  },
 }));
 
-function UserDetailsCard() {
+function UserDetailsCard({ self, data }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const { userProfile } = useContext(UserContext);
+  self && (data = userProfile);
 
   const handleClickOpen = () => {
     setOpen(!open);
@@ -67,41 +74,50 @@ function UserDetailsCard() {
         spacing={1}
       >
         <Grid item>
-          <StyledBadge
-            overlap="circle"
-            badgeContent={
-              <label onClick={handleClickOpen}>
-                <EditIcon fontSize="small" />
-              </label>
-            }
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-          >
+          {self ? (
+            <StyledBadge
+              overlap="circle"
+              badgeContent={
+                <label onClick={handleClickOpen}>
+                  <EditIcon fontSize="small" />
+                </label>
+              }
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+            >
+              <Avatar
+                src={user}
+                alt="User Profile"
+                aria-label="Name"
+                className={classes.avatar}
+              />
+            </StyledBadge>
+          ) : (
             <Avatar
               src={user}
-              alt="DP"
+              alt="User Profile"
               aria-label="Name"
               className={classes.avatar}
             />
-          </StyledBadge>
+          )}
         </Grid>
         <Grid item>
-          <Typography className={classes.name}>Nisarg Chokshi</Typography>
-        </Grid>
-        <Grid item>
-          <Typography style={{ paddingBottom: 0 }}>
-            Front-end Developer
+          <Typography className={classes.name}>
+            {data.fname + " " + data.lname}
           </Typography>
         </Grid>
         <Grid item>
-          <Typography style={{ paddingBottom: 0 }}>IT Semester 7</Typography>
+          <Typography className={classes.text}>{data.title}</Typography>
         </Grid>
         <Grid item>
-          <Typography className={classes.college}>
-            Vishwakarma Government Enginnering College
+          <Typography className={classes.text}>
+            {data.branch + " Semester " + data.semester}
           </Typography>
+        </Grid>
+        <Grid item>
+          <Typography className={classes.college}>{data.college}</Typography>
         </Grid>
       </Grid>
       <EditProfileDialog handleClickOpen={handleClickOpen} open={open} />

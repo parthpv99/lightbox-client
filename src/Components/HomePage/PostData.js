@@ -37,7 +37,7 @@ function PostData({ data }) {
           component="span"
           style={{
             marginLeft: 5,
-            color: "#5f5f5f",
+            color: "#969696",
             fontWeight: "bold",
             cursor: "pointer",
           }}

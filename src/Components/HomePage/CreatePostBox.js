@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Typography from "@material-ui/core/Typography";
 import { CardContent, Card, Button, Grid } from "@material-ui/core";
 import EmojiObjectsOutlinedIcon from "@material-ui/icons/EmojiObjectsOutlined";
@@ -36,19 +36,23 @@ const CreatePostBox = () => {
             justify="space-around"
           >
             <Grid item>
-              <Button color="primary" onClick={handleClickOpen}>
+              <Button color={"primary"} onClick={handleClickOpen}>
                 <EmojiObjectsOutlinedIcon></EmojiObjectsOutlinedIcon>
                 <span style={{ paddingTop: "15" }}> Idea / Event </span>
               </Button>
             </Grid>
             <Grid item>
-              <Button color="primary" onClick={handleClickOpen}>
+              <Button color={"primary"} onClick={handleClickOpen}>
                 <PhotoCameraOutlinedIcon></PhotoCameraOutlinedIcon>
                 <span style={{ paddingTop: "15" }}> Photo </span>
               </Button>
             </Grid>
             <Grid item>
-              <Button color="primary" onClick={handleClickOpen}>
+              <Button
+                color={"primary"}
+                form="create-post"
+                onClick={handleClickOpen}
+              >
                 <DescriptionOutlinedIcon></DescriptionOutlinedIcon>
                 <span style={{ paddingTop: "15" }}> Blog / Article </span>
               </Button>
@@ -56,7 +60,6 @@ const CreatePostBox = () => {
           </Grid>
         </CardContent>
       </Card>
-
       <CreatePostDialog handleClickOpen={handleClickOpen} open={open} />
     </div>
   );

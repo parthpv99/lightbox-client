@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useImperativeHandle, useState } from "react";
 import chroma from "chroma-js";
 // import { v4 } from "uuid";
 import SelectM from "react-select";
@@ -16,8 +16,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-// import { skillSet as SKILLSET } from "../../constants";
-import { generalSkillSet } from "../../constants";
+import { generalSkillSet, branchList } from "../../constants";
 // import Chip from "../Chip";
 
 const StyledBadge = withStyles((theme) => ({
@@ -47,19 +46,6 @@ const BootstrapInput = withStyles((theme) => ({
     padding: "10px 26px 10px 12px",
     transition: theme.transitions.create(["border-color", "box-shadow"]),
     fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-    // Use the system font instead of the default Roboto font.
-    // fontFamily: [
-    //   "-apple-system",
-    //   "BlinkMacSystemFont",
-    //   '"Segoe UI"',
-    //   "Roboto",
-    //   '"Helvetica Neue"',
-    //   "Arial",
-    //   "sans-serif",
-    //   '"Apple Color Emoji"',
-    //   '"Segoe UI Emoji"',
-    //   '"Segoe UI Symbol"',
-    // ].join(","),
     "&:focus": {
       borderRadius: 4,
       borderColor: "#80bdff",
@@ -102,11 +88,14 @@ const useStyles = makeStyles((theme) => ({
   Chip: {
     margin: "2px",
     fontWeight: "-moz-initial",
-    // fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol",
     fontFamily: "Roboto, Helvetica, Arial, sans-serif",
   },
   skillSelect: {
     marginTop: 2,
+  },
+  FormHelper: {
+    color: "red",
+    fontSize: 15,
   },
 }));
 
@@ -153,32 +142,46 @@ const skillStyles = {
   }),
 };
 
-const EditProfileForm = () => {
+const EditProfileForm = React.forwardRef((props, ref) => {
   const classes = useStyles();
-  const [fname, setFname] = useState("Nisarg");
-  const [lname, setLname] = useState("Chokshi");
-  const [title, setTitle] = useState("Web Developer");
-  const [branch, setBranch] = useState("Information Technology");
-  const [semester, setSemester] = useState(7);
+  const [data, setData] = useState({});
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+  const [title, setTitle] = useState("");
+  const [branch, setBranch] = useState("");
+  const [semester, setSemester] = useState("");
   const [skillSet, setSkillSet] = useState([]);
   const [image, setImage] = useState(null);
+  const [errors, setErrors] = useState({});
 
-  const submitHandler = () => {
-    console.log("submitted");
-  };
+  useImperativeHandle(ref, () => ({
+    submitHandler() {
+      if (!fname) {
+        errors.fname = "Enter Firstname";
+        setFname("");
+      }
+      if (!lname) {
+        errors.lname = "Enter Lastname";
+        setLname("");
+      }
+      if (!title) {
+        errors.title = "Enter Title";
+        setTitle("");
+      }
+      if (!branch) {
+        errors.branch = "Select Branch";
+        setBranch("");
+      }
+      if (!semester) {
+        errors.semester = "Select Semester";
+        setSemester("");
+      }
+      setErrors(errors);
+      // setImage(user);
+    },
+  }));
 
   const semesters = [1, 2, 3, 4, 5, 6, 7, 8];
-  const branchList = [
-    "Chemical Engineering",
-    "Civil Engineering",
-    "Computer Engineering",
-    "Electrical Engineering",
-    "Electronics and Communication",
-    "Information Technology",
-    "Instrumentation and Control",
-    "Mechanical Engineering",
-    "Power Electronics",
-  ];
 
   const fetchState = (label, isSelected) => {
     if (!isSelected) {
@@ -213,8 +216,35 @@ const EditProfileForm = () => {
     !flag && !sizeExceeded ? setImage(url) : setImage(null);
   };
 
+  const fnameHandler = (e) => {
+    const firstname = e.target.value;
+    !firstname.match(/(?=.[A-Za-z]+)/)
+      ? (errors.fname = "Firstname is invalid")
+      : (errors.fname = "");
+    setErrors(errors);
+    setFname(firstname);
+  };
+
+  const lnameHandler = (e) => {
+    const lastname = e.target.value;
+    !lastname.match(/(?=.[A-Za-z]+)/)
+      ? (errors.lname = "Lastname is invalid")
+      : (errors.lname = "");
+    setErrors(errors);
+    setLname(lastname);
+  };
+
+  const titleHandler = (e) => {
+    const ttl = e.target.value;
+    !ttl.match(/(?=.[A-Za-z]+)/)
+      ? (errors.title = "Title is invalid")
+      : (errors.title = "");
+    setErrors(errors);
+    setTitle(ttl);
+  };
+
   return (
-    <form onSubmit={submitHandler} style={{ width: "90%", margin: "auto" }}>
+    <form style={{ width: "90%", margin: "auto" }}>
       <input
         accept="image/png,image/gif,image/jpeg,image/jpg"
         className={classes.input}
@@ -262,6 +292,11 @@ const EditProfileForm = () => {
             <TextField
               id="fname"
               fullWidth
+              autoFocus
+              helperText={!fname && "Enter Name"}
+              FormHelperTextProps={{
+                className: classes.FormHelper,
+              }}
               label="First Name"
               variant="outlined"
               value={fname}
@@ -272,9 +307,13 @@ const EditProfileForm = () => {
                 className: classes.textFieldInput,
               }}
               className={classes.textField}
-              onChange={(e) => setFname(e.target.value)}
+              onChange={fnameHandler}
+              // onChange={(e) => setFname(e.target.value)}
               required
             />
+            {errors.fname && (
+              <Typography color="error">{errors.fname}</Typography>
+            )}
           </Grid>
           <Grid item md={5} xs={12}>
             <TextField
@@ -290,9 +329,12 @@ const EditProfileForm = () => {
                 className: classes.textFieldInput,
               }}
               className={classes.textField}
-              onChange={(e) => setLname(e.target.value)}
+              onChange={lnameHandler}
               required
             />
+            {errors.lname && (
+              <Typography color="error">{errors.lname}</Typography>
+            )}
           </Grid>
         </Grid>
         <Grid item xs container>
@@ -309,9 +351,13 @@ const EditProfileForm = () => {
               className: classes.textFieldInput,
             }}
             className={classes.textField}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={titleHandler}
+            // onChange={(e) => setTitle(e.target.value)}
             required
           />
+          {errors.title && (
+            <Typography color="error">{errors.title}</Typography>
+          )}
         </Grid>
         <Grid
           item
@@ -363,6 +409,9 @@ const EditProfileForm = () => {
                   </MenuItem>
                 ))}
               </Select>
+              {errors.semester && (
+                <Typography color="error">{errors.semester}</Typography>
+              )}
             </Grid>
           </Grid>
           <Grid
@@ -410,6 +459,9 @@ const EditProfileForm = () => {
                   </MenuItem>
                 ))}
               </Select>
+              {errors.branch && (
+                <Typography color="error">{errors.branch}</Typography>
+              )}
             </Grid>
           </Grid>
         </Grid>
@@ -455,8 +507,9 @@ const EditProfileForm = () => {
         className={classes.skillSelect}
         styles={skillStyles}
       />
+      {errors.skills && <Typography color="error">{errors.skills}</Typography>}
     </form>
   );
-};
+});
 
 export default EditProfileForm;

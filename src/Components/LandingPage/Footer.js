@@ -1,18 +1,37 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
-import { Grid, useMediaQuery, Container } from "@material-ui/core";
+import { Grid, useMediaQuery, Container, makeStyles } from "@material-ui/core";
+import { Link, useHistory } from "react-router-dom";
 
 const useStyle = makeStyles((theme) => ({
   footer: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.secondary.main,
-    fontWeight: "bold",
     fontSize: "1.3rem",
     [theme.breakpoints.down("sm")]: {
       fontSize: "0.8rem",
     },
   },
-  links:{
+  footerSmallPage: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.secondary.main,
+    fontSize: "1.3rem",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.8rem",
+      position: "relative",
+    },
+    position: "absolute",
+    right: 0,
+    bottom: 0,
+    left: 0,
+  },
+  heading: {
+    fontSize: "1.3rem",
+    fontWeight: "bold",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.8rem",
+    },
+  },
+  links: {
     fontSize: "1rem",
     [theme.breakpoints.down("sm")]: {
       fontSize: "0.7rem",
@@ -20,34 +39,65 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const Footer = () => {
+const Footer = ({ smallPage }) => {
   const classes = useStyle();
   const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
-
+  const history = useHistory();
   return (
-    <div className={classes.footer}>
+    <div className={smallPage ? classes.footerSmallPage : classes.footer}>
       <Container>
-        <Grid container spacing={matches ? 1 : 2}>
+        <Grid container>
           <Grid item sm={6}>
             <p>&#169; Lightbox, Copyright 2020</p>
           </Grid>
           <Grid item sm={6}>
-            <Grid container spacing={1} justify="space-evenly">
-              <Grid item sm={3}>
-                <p>About Us</p>
+            <Grid container justify="space-evenly">
+              <Grid item sm={3} style={{ marginLeft: 5, marginRight: 5 }}>
+                <p className={classes.heading}>About Lightbox</p>
                 <div className={classes.links}>
-                  <p> Our Services </p>
-                  <p> Testimonials </p>
-                  <p> Contact Us </p>
-                  <p> Careers </p> 
-                  <p> Team LightBox </p> 
+                  <p
+                    onClick={() => {
+                      history.push("/services");
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {" "}
+                    Our Services{" "}
+                  </p>
+                  <p
+                    onClick={() => {
+                      history.push("/careers");
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {" "}
+                    Careers{" "}
+                  </p>
+                  <p
+                    onClick={() => {
+                      history.push("/developers");
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {" "}
+                    Team LightBox{" "}
+                  </p>
+                  <p
+                    onClick={() => {
+                      history.push("/terms");
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {" "}
+                    Terms & Conditions{" "}
+                  </p>
                 </div>
               </Grid>
-              <Grid item sm={3}>
-                <p> Useful Links </p>
+              <Grid item sm={3} style={{ marginLeft: 5, marginRight: 5 }}>
+                <p className={classes.heading}> Useful Links</p>
                 <div className={classes.links}>
-                  <p> Projects </p>
-                  <p> Groups </p> 
+                  <p> Register </p>
+                  <p> Sign-In</p>
                 </div>
               </Grid>
             </Grid>

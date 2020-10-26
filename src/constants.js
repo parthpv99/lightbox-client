@@ -1,5 +1,17 @@
 export const kBaseUrl = "https://app-lightbox.herokuapp.com/api/";
 
+export const branchList = [
+  "Chemical Engineering",
+  "Civil Engineering",
+  "Computer Engineering",
+  "Electrical Engineering",
+  "Electronics and Communication",
+  "Information Technology",
+  "Instrumentation and Control",
+  "Mechanical Engineering",
+  "Power Electronics",
+];
+
 export const generalSkillSet = [
   {
     label: "Data Analysis",

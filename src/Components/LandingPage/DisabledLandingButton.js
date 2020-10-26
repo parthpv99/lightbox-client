@@ -1,6 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
-import { Grid, Button, Icon } from "@material-ui/core";
+import { Grid, Button, Icon, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   disabledButton: {
@@ -21,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DisabledLandingButton = (props) => {
+const DisabledLandingButton = ({ text, align }) => {
   const classes = useStyles();
   return (
     <Button
@@ -31,12 +30,9 @@ const DisabledLandingButton = (props) => {
       disabled
       className={classes.disabledButton}
     >
-      <Grid
-        container
-        justify={props.align === "left" ? "space-between" : "flex-end"}
-      >
-        {props.text}
-        {props.align === "left" && <Icon color="primary">arrow_right_alt</Icon>}
+      <Grid container justify={align === "left" ? "space-between" : "flex-end"}>
+        {text}
+        {align === "left" && <Icon color="primary">arrow_right_alt</Icon>}
       </Grid>
     </Button>
   );

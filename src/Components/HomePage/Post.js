@@ -60,7 +60,8 @@ const useStyles = makeStyles((theme) => ({
     // width: 600,
     margin: "10px 40px 10px 40px",
     [theme.breakpoints.down("sm")]: {
-      margin: 10,
+      margin: 0,
+      marginBottom: 10,
     },
   },
   media: {
@@ -185,7 +186,7 @@ const Post = () => {
         </StyledBadge>
       }
       action={
-        <IconButton aria-label="settings">
+        <IconButton color="inherit" aria-label="settings">
           <MoreVertIcon />
         </IconButton>
       }

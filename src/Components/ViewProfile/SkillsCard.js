@@ -6,59 +6,86 @@ import {
   Divider,
   makeStyles,
 } from "@material-ui/core";
-import React from "react";
+import React, { useContext, useState } from "react";
 import EditIcon from "@material-ui/icons/Edit";
+import EditProfileDialog from "../ProfilePage/EditProfileDialog";
+
+import { UserContext } from "../../Context/UserContext";
 
 const useStyles = makeStyles((theme) => ({
   card: {
     padding: "15px 35px",
   },
   cardheading: {
-    fontSize: "1.5rem",
+    fontSize: "1.3rem",
     fontWeight: "bold",
     padding: 8,
+    textAlign: "center",
+    [theme.breakpoints.down("md")]: {
+      padding: 3,
+      fontSize: "1.2rem",
+    },
+  },
+  skill: {
+    color: theme.palette.primary.main,
+    variant: "body1",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "0.9rem",
+    },
   },
 }));
 
-function SkillsCard() {
+function SkillsCard({ self, data }) {
   const classes = useStyles();
+  const { userProfile } = useContext(UserContext);
+  self && (data = userProfile);
+
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(!open);
+  };
+
   return (
     <Card className={classes.card}>
       <Grid container direction="column">
         <Grid item>
-          <Grid container direction="row" justify="space-between">
+          <Grid
+            container
+            direction="row"
+            justify="space-between"
+            alignItems="center"
+          >
             <Grid item>
               <Typography className={classes.cardheading}>Skills</Typography>
             </Grid>
-            <Grid item>
-              <IconButton color="primary">
-                <EditIcon />
-              </IconButton>
-            </Grid>
+            {self && (
+              <>
+                <Grid item>
+                  <IconButton color="primary" onClick={handleClickOpen}>
+                    <EditIcon />
+                  </IconButton>
+                </Grid>
+                <EditProfileDialog
+                  handleClickOpen={handleClickOpen}
+                  open={open}
+                />
+              </>
+            )}
           </Grid>
         </Grid>
         <Divider />
         <Grid item>
           <Grid
             container
-            alignItems="flex-start"
-            style={{ margin: "8px 30px" }}
+            alignItems="center"
+            justify="flex-start"
+            style={{ margin: "5px 10px" }}
           >
-            <Grid item xs={6}>
-              <Typography variant="body1">Algorithm</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">User Interface Design</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">User Experience Design</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">Data Mining</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="body1">Data Science</Typography>
-            </Grid>
+            {data.skillset.map((skill, index) => (
+              <Grid key={index} item md={4} xs={6}>
+                <Typography className={classes.skill}>{skill}</Typography>
+              </Grid>
+            ))}
           </Grid>
         </Grid>
       </Grid>
