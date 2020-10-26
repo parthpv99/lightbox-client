@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import Posts from "./Posts";
 import { Grid, Box, useMediaQuery } from "@material-ui/core";
 import CreatePostBox from "./CreatePostBox";
 import TopBlogsCard from "./TopBlogsCard";
 import QuickAccessCard from "../QuickAccess/QuickAccessCard";
+import { UserContext } from "../../Context/UserContext";
 
 const HomePage = () => {
   const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+
   return (
-    <Box my={matches ? 10 : 15} mx={3}>
+    <Box my={matches ? 10 : 15} mx={matches ? 3 : 0}>
       <Grid
         container
         direction="row"

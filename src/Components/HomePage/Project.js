@@ -14,6 +14,7 @@ import {
   makeStyles,
   Paper,
   Typography,
+  useMediaQuery,
   withStyles,
 } from "@material-ui/core";
 import clsx from "clsx";
@@ -62,7 +63,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     margin: "10px 40px 10px 40px",
     [theme.breakpoints.down("sm")]: {
-      margin: 10,
+      margin: 0,
+      marginBottom: 10,
     },
   },
   media: {
@@ -148,6 +150,7 @@ function Project() {
   const [expanded, setExpanded] = React.useState(false);
   const [upvoted, setUpvoted] = React.useState(false);
   const [requested, setrequested] = React.useState(false);
+  const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
 
   const btnClass = classNames(
     classes.btnspace,
@@ -194,7 +197,7 @@ function Project() {
         </StyledBadge>
       }
       action={
-        <IconButton aria-label="settings">
+        <IconButton color="inherit" aria-label="settings">
           <MoreVertIcon />
         </IconButton>
       }
@@ -228,11 +231,11 @@ function Project() {
         </Grid>
         <Grid item>
           <Typography variant="h6" style={{ fontSize: "1.05rem" }}>
-            Current Team:
+            Current Team Members: 3
           </Typography>
         </Grid>
         {/* Loop here */}
-        <Grid item>
+        {/* <Grid item>
           <Typography variant="body1" style={{ margin: 2, marginLeft: 15 }}>
             {"name: Technology"}
           </Typography>
@@ -246,7 +249,7 @@ function Project() {
           <Typography variant="body1" style={{ margin: 2, marginLeft: 15 }}>
             {"name: Technology"}
           </Typography>
-        </Grid>
+        </Grid> */}
         <Grid item>
           <Typography
             variant="h6"
@@ -303,7 +306,7 @@ function Project() {
   const cardAction = (
     <CardActions className={classes.actions}>
       <Grid container>
-        <Grid item xs={3}>
+        <Grid item xs={matches ? 3 : 4}>
           <Button
             fullWidth
             aria-label="upvote"
@@ -316,7 +319,7 @@ function Project() {
             </Typography>
           </Button>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={matches ? 3 : 4}>
           <Button
             fullWidth
             aria-label="request"
@@ -329,7 +332,7 @@ function Project() {
             </Typography>
           </Button>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={matches ? 3 : 4}>
           <Button
             fullWidth
             aria-label="comment"
@@ -343,14 +346,16 @@ function Project() {
             </Typography>
           </Button>
         </Grid>
-        <Grid item xs={3}>
-          <Button fullWidth aria-label="share" className={classes.btnspace}>
-            <ShareIcon />{" "}
-            <Typography variant="button" style={{ marginLeft: 10 }}>
-              Share
-            </Typography>
-          </Button>
-        </Grid>
+        {matches && (
+          <Grid item xs={3}>
+            <Button fullWidth aria-label="share" className={classes.btnspace}>
+              <ShareIcon />{" "}
+              <Typography variant="button" style={{ marginLeft: 10 }}>
+                Share
+              </Typography>
+            </Button>
+          </Grid>
+        )}
       </Grid>
     </CardActions>
   );

@@ -1,6 +1,14 @@
 import React from "react";
-import { makeStyles, fade } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Typography, Button, Container, useMediaQuery } from "@material-ui/core";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Container,
+  useMediaQuery,
+  makeStyles,
+  fade,
+} from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -34,10 +42,6 @@ const useStyles = makeStyles((theme) => ({
       marginRight: theme.spacing(0),
     },
   },
-  logo: {
-    width: "6%",
-    height: "6%",
-  },
 }));
 
 const LandingHeader = (props) => {
@@ -46,7 +50,6 @@ const LandingHeader = (props) => {
 
   const toolbar = (
     <Toolbar>
-      {/* <img src={logo} alt="logo" className={classes.logo} /> */}
       <Typography variant="h4" className={classes.title}>
         Lightbox
       </Typography>

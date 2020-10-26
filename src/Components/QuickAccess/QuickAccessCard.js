@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles, Card, Grid } from "@material-ui/core";
 import QuickAccessLinks from "./QuickAccessLinks";
 
@@ -9,6 +9,7 @@ import blog from "../../assets/blog.png";
 import myblog from "../../assets/myblogs.png";
 import projects from "../../assets/projects.png";
 import myprojects from "../../assets/myprojects.png";
+import { UserContext } from "../../Context/UserContext";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -21,11 +22,16 @@ const useStyles = makeStyles((theme) => ({
 
 function QuickAccessCard() {
   const classes = useStyles();
+  const { userProfile } = useContext(UserContext);
   return (
     <Card className={classes.card}>
       <Grid container direction="column" spacing={2}>
         <Grid item xs={12}>
-          <QuickAccessLinks icon={user} link="/" title="Nisarg Chokshi" />
+          <QuickAccessLinks
+            icon={user}
+            link="/viewprofile"
+            title={userProfile.fname + " " + userProfile.lname}
+          />
         </Grid>
         <Grid item xs={12}>
           <QuickAccessLinks

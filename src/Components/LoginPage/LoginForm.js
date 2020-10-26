@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Typography, TextField, Button, Grid } from "@material-ui/core";
 // import { useHistory } from "react-router-dom";
 import { kBaseUrl } from "../../constants";
-import { setCookies } from "../../utility";
+import { UserContext } from "../../Context/UserContext";
 
 const LoginForm = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [loginBtnDisable, setLoginBtnDisable] = useState(false);
+  const { userProfile, setUserProfile } = useContext(UserContext);
   // const history = useHistory();
 
   const handleLogin = (event) => {
@@ -26,19 +27,31 @@ const LoginForm = (props) => {
 
       fetch(kBaseUrl + "login", {
         body: user,
-        mode: "cors",
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "same-origin",
+        credentials: "include",
         method: "POST",
       })
         .then((res) => {
           if (res.status === 200) {
-            let accessToken = "access-token";
-            let token = res.headers.get(accessToken);
-            setCookies(accessToken, token);
-            props.setLogin();
+            // let accessToken = "access-token";
+            // let token = res.headers.get(accessToken);
+            // setCookies(accessToken, token);
+            // console.log(res);
+            // need userProfile
+            //setUserProfile(res);
+            fetch(kBaseUrl + "fetch_profile", {
+              credentials: "include",
+              method: "GET",
+            })
+              .then((res) => {
+                return res.json();
+              })
+              .then((data) => setUserProfile(data))
+              .then(() => {
+                props.setLogin();
+              });
           } else {
             if (res.status === 400) setError(true);
             else setError(true);

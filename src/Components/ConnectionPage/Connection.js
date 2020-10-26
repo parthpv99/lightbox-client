@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   Grid,
@@ -7,10 +7,15 @@ import {
   makeStyles,
   IconButton,
   useMediaQuery,
+  fade,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ChatIcon from "@material-ui/icons/Chat";
-import user from "../../assets/user.png";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import PersonAddDisabledIcon from "@material-ui/icons/PersonAddDisabled";
+import { CheckCircle, Cancel, Block } from "@material-ui/icons";
+import { kBaseUrl } from "../../constants";
+import ViewProfileDialog from "../ViewProfile/ViewProfileDialog";
 
 const useStyle = makeStyles((theme) => ({
   btn: {
@@ -23,16 +28,22 @@ const useStyle = makeStyles((theme) => ({
   //     background: "#009926",
   //   },
   // },
+
   avatar: {
-    width: 65,
-    height: 65,
+    width: "85%",
+    height: "85%",
     marginLeft: 5,
-    border: "2px solid black",
+    border: `2px solid ${theme.palette.primary.main}`,
     backgroundColor: "transparent",
+    [theme.breakpoints.down("sm")]: {
+      width: 65,
+      height: 65,
+    },
   },
   card: {
     padding: 8,
     boxShadow: theme.shadows[1],
+    background: fade(theme.palette.secondary.main, 0.15),
     border: `1px solid ${theme.palette.primary.main}`,
     [theme.breakpoints.down("sm")]: {
       padding: 5,
@@ -40,9 +51,106 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const Connection = ({ photo, name, role, semester, branch, count }) => {
+const Connection = ({
+  uid,
+  photo,
+  name,
+  role,
+  semester,
+  branch,
+  suggested,
+  invite,
+}) => {
   const classes = useStyle();
   const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+  const [sent, setSent] = useState(false);
+  const [viewProfile, setViewProfile] = React.useState(false);
+
+  const handleTop = () => {
+    if (invite) {
+      fetch(kBaseUrl + "accept_connection", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          uid,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data.message))
+        .catch((e) => console.log(e));
+    } else if (suggested) {
+      fetch(kBaseUrl + "make_connection_request", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          uid,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data.message))
+        .then(setSent(true))
+        .catch((e) => console.log(e));
+    } else {
+      fetch(kBaseUrl + "remove_connection", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          uid,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data.message))
+        .catch((e) => console.log(e));
+    }
+  };
+
+  const handleBottom = () => {
+    if (invite) {
+      fetch(kBaseUrl + "reject_connection_request", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          uid,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data.message))
+        .catch((e) => console.log(e));
+    } else if (suggested) {
+      console.log("Suggestion Removed!");
+    } else {
+      fetch(kBaseUrl + "remove_connection", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          uid,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data.message))
+        .catch((e) => console.log(e));
+    }
+  };
+
+  const handleViewProfile = () => {
+    setViewProfile(!viewProfile);
+  };
+
   return (
     <Card variant="outlined" className={classes.card}>
       <Grid
@@ -53,26 +161,45 @@ const Connection = ({ photo, name, role, semester, branch, count }) => {
       >
         <Grid item xs={matches && 3}>
           <Avatar
-            src={user}
+            src={photo}
             alt="N"
             aria-label="Name"
             className={classes.avatar}
           />
         </Grid>
-        <Grid item xs={matches && 8}>
+        <Grid
+          item
+          xs={matches && 8}
+          style={{ cursor: "pointer" }}
+          onClick={handleViewProfile}
+        >
           <Grid
             container
             justify="center"
             direction="column"
             alignItems="flex-start"
           >
-            <Typography variant="h6">{"Nisarg"}</Typography>
-            <Typography variant="body2" style={{ fontSize: "1rem" }}>
-              {"Full-stack Developer"}
+            <Typography variant="h6" noWrap={true}>
+              {name}
             </Typography>
-            <Typography variant="body2" style={{ fontSize: "1rem" }}>
-              {"IT Semester 7"}
+            <Typography
+              variant="body2"
+              noWrap={true}
+              style={{ fontSize: "1rem", width: "90%" }}
+            >
+              {role}
             </Typography>
+            <Typography variant="body2" style={{ fontSize: "0.9rem" }}>
+              {branch}
+            </Typography>
+            <Typography variant="body2" style={{ fontSize: "0.9rem" }}>
+              {"Semester " + semester}
+            </Typography>
+            <ViewProfileDialog
+              setOpen={handleViewProfile}
+              open={viewProfile}
+              uid={uid}
+            />
           </Grid>
         </Grid>
         <Grid item xs={matches && 1}>
@@ -81,7 +208,6 @@ const Connection = ({ photo, name, role, semester, branch, count }) => {
             direction="column"
             alignItems="center"
             justify="center"
-            spacing={1}
           >
             <Grid item>
               <IconButton
@@ -89,8 +215,19 @@ const Connection = ({ photo, name, role, semester, branch, count }) => {
                 size="small"
                 variant="outlined"
                 className={classes.btn}
+                onClick={handleTop}
               >
-                <ChatIcon />
+                {invite ? (
+                  <CheckCircle />
+                ) : suggested ? (
+                  sent ? (
+                    <PersonAddDisabledIcon />
+                  ) : (
+                    <PersonAddIcon />
+                  )
+                ) : (
+                  <ChatIcon />
+                )}
               </IconButton>
             </Grid>
             <Grid item>
@@ -99,8 +236,9 @@ const Connection = ({ photo, name, role, semester, branch, count }) => {
                 size="small"
                 variant="outlined"
                 className={classes.btn}
+                onClick={handleBottom}
               >
-                <DeleteIcon />
+                {invite ? <Cancel /> : suggested ? <Block /> : <DeleteIcon />}
               </IconButton>
             </Grid>
           </Grid>

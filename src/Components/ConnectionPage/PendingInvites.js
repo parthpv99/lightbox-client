@@ -1,12 +1,23 @@
-import { Button, Card, CardHeader, Grid, makeStyles } from "@material-ui/core";
-import React from "react";
+import {
+  Button,
+  Card,
+  CardHeader,
+  Grid,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
+import React, { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { MoonLoader } from "react-spinners";
+import { kBaseUrl } from "../../constants";
+import { ThemeContext } from "../../Context/ThemeContext";
 import InviteCard from "./InviteCard";
 
 const useStyles = makeStyles((theme) => ({
   card: {
     padding: "0px 20px 15px 20px",
-    position: "fixed",
-    width: "22%",
+    // position: "fixed",
+    // width: "22%",
   },
   title: {
     fontFamily: "Roboto, Helvetica, Arial, sans-serif",
@@ -19,6 +30,26 @@ const useStyles = makeStyles((theme) => ({
 
 function PendingInvites() {
   const classes = useStyles();
+  const [invites, setInvites] = useState([]);
+  const history = useHistory();
+  const [loading, setloading] = useState(true);
+  const { defaultTheme } = useContext(ThemeContext);
+
+  useEffect(() => {
+    fetch(kBaseUrl + "request_received", {
+      credentials: "include",
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => setInvites(data.data.slice(0, 2)))
+      .then(() => setloading(false))
+      .catch((e) => console.log(e));
+  }, []);
+
+  const handleSeeMore = () => {
+    history.push("/allinvites");
+  };
+
   return (
     <Card className={classes.card}>
       <CardHeader
@@ -26,20 +57,48 @@ function PendingInvites() {
         className={classes.title}
         title="Total Invites"
       />
-      <Grid container direction="column" spacing={1}>
-        <Grid item>
-          <InviteCard />
-        </Grid>
-        <Grid item>
-          <InviteCard />
-        </Grid>
-        <Grid item>
-          <InviteCard />
-        </Grid>
+      <Grid
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+        spacing={1}
+      >
+        {loading ? (
+          <Grid item>
+            <MoonLoader
+              size={30}
+              color={defaultTheme === "dark" ? "#B6B6B6" : "#006BA6"}
+              loading={loading}
+            />
+          </Grid>
+        ) : (
+          <>
+            {invites.length !== 0 ? (
+              invites.map((invite) => (
+                <Grid item key={invite.uid}>
+                  <InviteCard data={invite} suggested={false} />
+                </Grid>
+              ))
+            ) : (
+              <Typography
+                color="textSecondary"
+                variant="h6"
+                style={{ textAlign: "center" }}
+              >
+                No pending invites!
+              </Typography>
+            )}
+          </>
+        )}
       </Grid>
-      <Grid container justify="flex-end">
-        <Button color="primary">See more...</Button>
-      </Grid>
+      {!loading && invites.length !== 0 && (
+        <Grid container justify="flex-end">
+          <Button color="primary" onClick={handleSeeMore}>
+            See more...
+          </Button>
+        </Grid>
+      )}
     </Card>
   );
 }

@@ -1,5 +1,6 @@
 import { Button, Card, CardHeader, Grid, makeStyles } from "@material-ui/core";
-import React from "react";
+import React, { useContext } from "react";
+import { ThemeContext } from "../../Context/ThemeContext";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -14,6 +15,13 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.2rem",
     color: theme.palette.primary.main,
   },
+  darkLink: {
+    color: theme.palette.secondary.main,
+    textDecoration: "none",
+    "&:hover": {
+      color: theme.palette.primary.main,
+    },
+  },
   link: {
     color: "black",
     textDecoration: "none",
@@ -25,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 
 function TopBlogsCard() {
   const classes = useStyles();
+  const { defaultTheme } = useContext(ThemeContext);
+
   return (
     <Card className={classes.card}>
       <CardHeader
@@ -34,22 +44,42 @@ function TopBlogsCard() {
       />
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <a href="/home" className={classes.link}>
+          <a
+            href="/home"
+            className={
+              defaultTheme === "dark" ? classes.darkLink : classes.link
+            }
+          >
             Top 10 ways to enhance your Web Designinig skills
           </a>
         </Grid>
         <Grid item>
-          <a href="/home" className={classes.link}>
+          <a
+            href="/home"
+            className={
+              defaultTheme === "dark" ? classes.darkLink : classes.link
+            }
+          >
             Roradmap to React Js
           </a>
         </Grid>
         <Grid item>
-          <a href="/home" className={classes.link}>
+          <a
+            href="/home"
+            className={
+              defaultTheme === "dark" ? classes.darkLink : classes.link
+            }
+          >
             JavaScript Overview in 2 Hours
           </a>
         </Grid>
         <Grid item>
-          <a href="/home" className={classes.link}>
+          <a
+            href="/home"
+            className={
+              defaultTheme === "dark" ? classes.darkLink : classes.link
+            }
+          >
             Top 10 Machine Learning Algorithms
           </a>
         </Grid>

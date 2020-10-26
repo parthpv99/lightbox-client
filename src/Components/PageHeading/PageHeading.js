@@ -22,11 +22,15 @@ const useStyle = makeStyles((theme) => ({
       fontSize: "1rem",
     },
   },
+  divider: {
+    backgroundColor: "#5F5F5F",
+  },
 }));
 
 function PageHeading({ title, icon, countTitle, count }) {
   const classes = useStyle();
   const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+
   return (
     <div>
       <Grid
@@ -62,7 +66,7 @@ function PageHeading({ title, icon, countTitle, count }) {
           </Grid>
         </Grid>
       </Grid>
-      <Divider />
+      <Divider className={classes.divider} />
     </div>
   );
 }

@@ -41,7 +41,7 @@ const LoginPage = (props) => {
         <Card className={classes.card}>
           <CardContent>
             <Grid item>
-              <Link to="/" style={{textDecoration:"none"}}>
+              <Link to="/" style={{ textDecoration: "none" }}>
                 <h1 className={classes.title}>Lightbox</h1>
               </Link>
             </Grid>

@@ -1,12 +1,24 @@
 import { Grid, makeStyles, Card, Typography, Avatar } from "@material-ui/core";
-import React from "react";
+import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
+import { ThemeContext } from "../../Context/ThemeContext";
 
 const useStyles = makeStyles((theme) => ({
   title: {
     color: theme.palette.primary.main,
     fontSize: "1.2rem",
     fontWeight: 500,
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: "4px",
+    },
+  },
+  titleDark: {
+    color: theme.palette.secondary.main,
+    fontSize: "1.2rem",
+    fontWeight: 500,
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: "4px",
+    },
   },
   card: {
     boxShadow: theme.shadows[0],
@@ -22,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 function QuickAccessLinks({ icon, title, link }) {
   const classes = useStyles();
   const history = useHistory();
+  const { defaultTheme } = useContext(ThemeContext);
 
   const clickHandler = () => {
     history.push(link);
@@ -34,7 +47,13 @@ function QuickAccessLinks({ icon, title, link }) {
           <Avatar src={icon} className={classes.icon} />
         </Grid>
         <Grid item xs={10}>
-          <Typography className={classes.title}>{title}</Typography>
+          <Typography
+            className={
+              defaultTheme === "dark" ? classes.titleDark : classes.title
+            }
+          >
+            {title}
+          </Typography>
         </Grid>
       </Grid>
     </Card>

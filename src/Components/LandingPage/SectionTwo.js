@@ -1,6 +1,12 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
-import { Container, Grid, Typography, useMediaQuery, Avatar } from "@material-ui/core";
+import {
+  Container,
+  Grid,
+  Typography,
+  useMediaQuery,
+  Avatar,
+  makeStyles,
+} from "@material-ui/core";
 import group from "../../assets/section-2.jpg";
 import DisabledLandingButton from "./DisabledLandingButton";
 
@@ -16,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "right",
     [theme.breakpoints.down("md")]: {
       fontSize: "1.5rem",
+      marginTop: "10px",
     },
   },
   avatar: {
@@ -34,7 +41,6 @@ const SectionTwo = () => {
   const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   const avatar = (
     <Grid item xs={12} sm={6}>
-      {/* <img src={group} alt="Group Image" /> */}
       <Avatar className={classes.avatar} src={group} alt="Group Image" />
     </Grid>
   );
@@ -46,7 +52,7 @@ const SectionTwo = () => {
           {matches && avatar}
           <Grid item xs={12} sm={6}>
             <Typography variant="h6" className={classes.heading}>
-              Join Us!
+              Join Us !
             </Typography>
             <Grid container spacing={3}>
               <Grid item xs={12}>
@@ -57,7 +63,7 @@ const SectionTwo = () => {
               </Grid>
               <Grid item xs={12}>
                 <DisabledLandingButton
-                  text="Work With Any Team You Want"
+                  text="Work With the Team You Want"
                   align="right"
                 />
               </Grid>

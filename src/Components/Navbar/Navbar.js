@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import {
+  ThemeProvider,
   AppBar,
   Toolbar,
   IconButton,
@@ -9,6 +10,7 @@ import {
   useMediaQuery,
   Grid,
   Box,
+  Switch,
 } from "@material-ui/core";
 // import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
@@ -19,7 +21,9 @@ import CreateMenu from "./CreateMenu";
 import ProfileMenu from "./ProfileMenu";
 import EditProfileDialog from "../ProfilePage/EditProfileDialog";
 import logo from "../../assets/logo.png";
-import TempTabBar from "./TempTabBar";
+import { ThemeContext } from "../../Context/ThemeContext";
+import lighttheme from "../../theme";
+import darktheme from "../../darktheme";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -27,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     display: "flex",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.2rem",
+    },
   },
   search: {
     position: "relative",
@@ -62,9 +69,6 @@ const useStyles = makeStyles((theme) => ({
   //   transition: theme.transitions.create("width"),
   //   width: "120px",
   // },
-  sectionDesktop: {
-    display: "flex",
-  },
   img: {
     width: 35,
     height: 35,
@@ -74,6 +78,17 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = (props) => {
   const classes = useStyles();
   let matches = useMediaQuery((theme) => theme.breakpoints.up("md"));
+  const { setLogout } = props;
+  const [switchToggle, setSwitchToggle] = useState(
+    localStorage.getItem("dark-theme") === "true"
+  );
+  const { defaultTheme } = useContext(ThemeContext);
+  const appliedTheme = defaultTheme === "dark" ? darktheme : lighttheme;
+
+  const handleSwitch = () => {
+    setSwitchToggle(!switchToggle);
+    props.toggleTheme();
+  };
 
   return (
     <div>
@@ -85,7 +100,7 @@ const Navbar = (props) => {
             // justify="space-between"
             alignItems="center"
           >
-            <Grid item xs={matches ? 2 : 6} container alignItems="center">
+            <Grid item xs={matches ? 2 : 4} container alignItems="center">
               <Box component="span">
                 <img src={logo} alt="" className={classes.img} />
               </Box>
@@ -119,11 +134,24 @@ const Navbar = (props) => {
               </Grid>
             )}
             {/* <div className={classes.grow} /> */}
-            <Grid item xs={matches ? 3 : 6} container justify="flex-end">
-              <div className={classes.sectionDesktop}>
-                <IconButton color="inherit">
+            <Grid
+              item
+              xs={matches ? 3 : 8}
+              container
+              alignItems="center"
+              justify="flex-end"
+            >
+              {/* <div className={classes.sectionDesktop}> */}
+              <Switch
+                checked={switchToggle}
+                onChange={handleSwitch}
+                name="checkedB"
+                color="secondary"
+              />
+              <ThemeProvider theme={appliedTheme}>
+                {/* <IconButton color="inherit">
                   <SearchIcon />
-                </IconButton>
+                </IconButton> */}
                 <CreateMenu />
                 <IconButton
                   aria-label="show 17 new notifications"
@@ -133,9 +161,10 @@ const Navbar = (props) => {
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>
-                <ProfileMenu />
+                <ProfileMenu setLogout={setLogout} />
                 <EditProfileDialog open={false} />
-              </div>
+              </ThemeProvider>
+              {/* </div> */}
             </Grid>
           </Grid>
         </Toolbar>
