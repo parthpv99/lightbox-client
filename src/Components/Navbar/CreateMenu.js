@@ -5,10 +5,12 @@ import {
   MenuItem,
   makeStyles,
   fade,
+  Tooltip,
 } from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import CreatePostDialog from "../HomePage/CreatePostDialog";
 import { ThemeContext } from "../../Context/ThemeContext";
+import StartProjectDialog from "../Project/StartProjectDialog";
 
 const useStyles = makeStyles((theme) => ({
   menuItem: {
@@ -30,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 const CreateMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
+  const [openProject, setOpenProject] = React.useState(false);
   const classes = useStyles();
   const { defaultTheme } = useContext(ThemeContext);
 
@@ -46,16 +49,23 @@ const CreateMenu = () => {
     setOpen(!open);
   };
 
+  const handleClickOpenProject = () => {
+    setAnchorEl(null);
+    setOpenProject(!openProject);
+  };
+
   return (
     <div>
-      <IconButton
-        aria-controls="simple-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-        color="inherit"
-      >
-        <AddCircleIcon />
-      </IconButton>
+      <Tooltip title="Create Menu">
+        <IconButton
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+          onClick={handleClick}
+          color="inherit"
+        >
+          <AddCircleIcon />
+        </IconButton>
+      </Tooltip>
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -71,24 +81,28 @@ const CreateMenu = () => {
         >
           Create Post
         </MenuItem>
+        <CreatePostDialog handleClickOpen={handleClickOpen} open={open} />
         <MenuItem
           className={
             defaultTheme === "dark" ? classes.menuItemDark : classes.menuItem
           }
-          onClick={handleClose}
+          onClick={handleClickOpenProject}
         >
           Start Project
         </MenuItem>
-        <MenuItem
+        <StartProjectDialog
+          handleClickOpen={handleClickOpenProject}
+          open={openProject}
+        />
+        {/* <MenuItem
           className={
             defaultTheme === "dark" ? classes.menuItemDark : classes.menuItem
           }
           onClick={handleClose}
         >
           Write Blog
-        </MenuItem>
+        </MenuItem> */}
       </Menu>
-      <CreatePostDialog handleClickOpen={handleClickOpen} open={open} />
     </div>
   );
 };

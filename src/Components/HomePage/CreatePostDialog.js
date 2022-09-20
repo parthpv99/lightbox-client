@@ -16,6 +16,12 @@ import { kBaseUrl } from "../../constants";
 import { ThemeContext } from "../../Context/ThemeContext";
 import useForm from "../../hooks/useForm";
 import validate from "../../validate/validateCreatePost";
+import SnackBar from "../SnackBar";
+import { useToast } from "../../Context/ToastProvider";
+import { usePosts } from "../../Context/PostsProvider";
+import imageToBase64 from "image-to-base64";
+import { useMyPosts } from "../../Context/MyPostsProvider";
+import { Backdrop, CircularProgress } from "@material-ui/core";
 
 const styles = (theme) => ({
   root: {
@@ -113,6 +119,10 @@ const useStyles = makeStyles((theme) => ({
     left: "88%",
     transform: "translate(0%, 10%)",
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
   dialog: {
     "&::-webkit-scrollbar": {
       width: "0.6rem",
@@ -171,14 +181,17 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-const CreatePostDialog = ({ open, handleClickOpen }) => {
+const CreatePostDialog = ({ open, handleClickOpen, edit, postdata }) => {
   const [openWarning, setOpenWarning] = React.useState(false);
-  const [images, setImages] = React.useState([]);
+  const [images, setImages] = React.useState(edit ? postdata.post_image : []);
   const [fileData, setFileData] = React.useState([]);
-  const [description, setDescription] = React.useState("");
+  const [backdrop, setBackdrop] = React.useState(false);
   const [tags, setTags] = React.useState([]);
   const classes = useStyles();
   const { defaultTheme } = useContext(ThemeContext);
+  const { setToast, setMessage, setMessageType } = useToast();
+  const { posts, setPosts } = usePosts();
+  const { myposts, setMyPosts } = useMyPosts();
 
   var hashtags = [];
   const formatHashtags = (string) => {
@@ -195,7 +208,7 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
   };
 
   const data = {
-    description: "",
+    description: edit ? postdata.description : "",
   };
 
   const errorData = {
@@ -203,32 +216,54 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
   };
 
   const submit = () => {
-    formatHashtags(description);
-    console.log({
-      images: fileData,
-      description: description,
-      tags: hashtags,
-    });
+    setBackdrop(true);
+    formatHashtags(values.description);
+    // console.log({
+    //   images: fileData,
+    //   description: values.description,
+    //   tags: hashtags,
+    // });
 
-    //   fetch(kBaseUrl + "post", {
-    //     credentials: "include",
-    //     // mode: "no-cors",
-    //     method: "POST",
-    //     headers: {
-    //       "content-type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       images: fileData,
-    //       description: description,
-    //       tags: hashtags,
-    //     }),
-    //   })
-    //     .then((res) => {
-    //       if (res.status == 200) {
-    //         handleWarningDiscard();
-    //       }
-    //     })
-    //     .catch((e) => console.log(e));
+    fetch(kBaseUrl + "post", {
+      credentials: "include",
+      // mode: "no-cors",
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("access-token")}`,
+      },
+      body: JSON.stringify({
+        _id: edit && postdata._id,
+        images: fileData,
+        description: values.description,
+        tags: hashtags,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        let pst = posts.filter((pst) => pst._id === data._id);
+        const epst = posts.filter((pst) => pst._id !== data._id);
+        pst = data;
+        setPosts([pst, ...epst]);
+        let mpst = myposts.filter((pst) => pst._id === data._id);
+        const empst = myposts.filter((pst) => pst._id !== data._id);
+        mpst = data;
+        setMyPosts([mpst, ...empst]);
+        setToast(true);
+        setMessage(
+          edit ? "Post Edited Successfully" : "Post Created Successfully"
+        );
+        setMessageType("success");
+        setBackdrop(false);
+        handleWarningDiscard();
+      })
+      .catch((e) => {
+        console.log(e);
+        setBackdrop(false);
+        setToast(true);
+        setMessage("Something Went Wrong! Please try again");
+        setMessageType("error");
+      });
   };
 
   const { handleChange, handleSubmit, values, errors } = useForm(
@@ -243,7 +278,7 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
   };
 
   const handleClose = () => {
-    setDescription("");
+    !edit && (values.description = "");
     setImages([]);
     handleClickOpen();
   };
@@ -260,6 +295,23 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
   // const handleDescription = (event) => {
   //   setDescription(event.target.value);
   // };
+
+  // var urlTobase64images = [];
+  // edit &&
+  //   images &&
+  //   images.map((image) => {
+  //     imageToBase64(image)
+  //       .then((response) => {
+  //         urlTobase64images.push(response);
+  //         console.log("in mapping");
+  //       })
+  //       .catch((e) => {
+  //         console.log(e);
+  //         console.log("in mapping");
+  //       });
+  //   });
+
+  // console.log(urlTobase64images);
 
   const displaySelectedImages = (event) => {
     const files = [...event.target.files];
@@ -339,7 +391,7 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
     flag && alert("Only Image Files are Supported !");
     sizeExceeded && alert("Please Select images smaller than 8 MB size!");
     if (!flag && !sizeExceeded) {
-      setImages(urls);
+      setImages(edit ? [...images, ...urls] : urls);
       setFileData(base64images);
       // console.log(fileData);
     } else {
@@ -355,7 +407,7 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
     fls.splice(index, 1);
     setImages(imgs);
     setFileData(fls);
-    console.log(fileData);
+    // console.log(fileData);
   };
 
   // const formData = new FormData();
@@ -394,12 +446,15 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
       aria-labelledby="customized-dialog-title"
       open={open}
     >
+      <Backdrop className={classes.backdrop} open={backdrop}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <DialogTitle
         id="customized-dialog-title"
         onClose={handleWarningClickOpen}
         style={{ color: "black" }}
       >
-        Create A Post
+        {edit ? `Edit Post` : `Create A Post`}
       </DialogTitle>
       <DialogContent className={classes.dialog}>
         {WarningDialog}
@@ -430,26 +485,30 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
         {images &&
           images.map((image, index) => (
             <div key={index} className={classes.closeButtonDiv}>
-              <IconButton
-                className={classes.close}
-                aria-label="remove picture"
-                onClick={() => removeImage(index)}
-              >
-                <CancelIcon fontSize="large" />
-              </IconButton>
+              {!edit && (
+                <IconButton
+                  className={classes.close}
+                  aria-label="remove picture"
+                  onClick={() => removeImage(index)}
+                >
+                  <CancelIcon fontSize="large" />
+                </IconButton>
+              )}
               <img src={image} width="100%" alt="" />
             </div>
           ))}
       </DialogContent>
       <DialogActions className={classes.action}>
         <label htmlFor="icon-button-file">
-          <IconButton
-            color="primary"
-            aria-label="upload picture"
-            component="span"
-          >
-            <PhotoCamera />
-          </IconButton>
+          {!edit && (
+            <IconButton
+              color="primary"
+              aria-label="upload picture"
+              component="span"
+            >
+              <PhotoCamera />
+            </IconButton>
+          )}
         </label>
         <Button
           autoFocus
@@ -465,8 +524,3 @@ const CreatePostDialog = ({ open, handleClickOpen }) => {
 };
 
 export default CreatePostDialog;
-
-// const imgs = [...images];
-//     imgs.splice(index, 1);
-
-//     setImages(imgs);

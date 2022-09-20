@@ -24,7 +24,10 @@ const useStyles = makeStyles((theme) => ({
   },
   navbar: {
     marginTop: "2.5rem",
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor:
+      localStorage.getItem("dark-theme") === "true"
+        ? theme.palette.background.default
+        : theme.palette.secondary.main,
     color: theme.palette.primary.main,
     boxShadow: theme.shadows[0],
   },

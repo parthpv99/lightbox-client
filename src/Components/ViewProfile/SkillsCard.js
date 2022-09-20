@@ -11,6 +11,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import EditProfileDialog from "../ProfilePage/EditProfileDialog";
 
 import { UserContext } from "../../Context/UserContext";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -29,9 +30,13 @@ const useStyles = makeStyles((theme) => ({
   skill: {
     color: theme.palette.primary.main,
     variant: "body1",
+    cursor: "pointer",
     [theme.breakpoints.down("md")]: {
       fontSize: "0.9rem",
     },
+  },
+  divider: {
+    backgroundColor: "#5F5F5F",
   },
 }));
 
@@ -39,6 +44,7 @@ function SkillsCard({ self, data }) {
   const classes = useStyles();
   const { userProfile } = useContext(UserContext);
   self && (data = userProfile);
+  const history = useHistory();
 
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
@@ -73,7 +79,7 @@ function SkillsCard({ self, data }) {
             )}
           </Grid>
         </Grid>
-        <Divider />
+        <Divider className={classes.divider} />
         <Grid item>
           <Grid
             container
@@ -81,11 +87,14 @@ function SkillsCard({ self, data }) {
             justify="flex-start"
             style={{ margin: "5px 10px" }}
           >
-            {data.skillset.map((skill, index) => (
-              <Grid key={index} item md={4} xs={6}>
-                <Typography className={classes.skill}>{skill}</Typography>
-              </Grid>
-            ))}
+            {data.skillset &&
+              data.skillset.map((skill, index) => (
+                <Grid key={index} item md={4} xs={6}>
+                  <Typography className={classes.skill} onClick={() => {
+                    history.push("/search", { string: skill });
+                  }}>{skill}</Typography>
+                </Grid>
+              ))}
           </Grid>
         </Grid>
       </Grid>

@@ -10,6 +10,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { MoonLoader } from "react-spinners";
 import { kBaseUrl } from "../../constants";
+import { useConnections } from "../../Context/ConnectionProvider";
 import { ThemeContext } from "../../Context/ThemeContext";
 import InviteCard from "./InviteCard";
 
@@ -17,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   card: {
     padding: "0px 20px 15px 20px",
     // position: "fixed",
-    // width: "22%",
+    // maxWidth: "22%",
   },
   title: {
     fontFamily: "Roboto, Helvetica, Arial, sans-serif",
@@ -30,25 +31,30 @@ const useStyles = makeStyles((theme) => ({
 
 function PendingInvites() {
   const classes = useStyles();
-  const [invites, setInvites] = useState([]);
+  const { invites, setInvites } = useConnections();
   const history = useHistory();
   const [loading, setloading] = useState(true);
   const { defaultTheme } = useContext(ThemeContext);
+
+  const handleSeeMore = () => {
+    history.push("/allinvites");
+  };
 
   useEffect(() => {
     fetch(kBaseUrl + "request_received", {
       credentials: "include",
       method: "GET",
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("access-token")}`,
+      }
     })
       .then((res) => res.json())
-      .then((data) => setInvites(data.data.slice(0, 2)))
+      .then((data) => setInvites(data.slice(0, 2)))
       .then(() => setloading(false))
       .catch((e) => console.log(e));
   }, []);
 
-  const handleSeeMore = () => {
-    history.push("/allinvites");
-  };
+  const invitations = invites && invites.length !== 0 ? invites.slice(0, 2) : [];
 
   return (
     <Card className={classes.card}>
@@ -74,8 +80,8 @@ function PendingInvites() {
           </Grid>
         ) : (
           <>
-            {invites.length !== 0 ? (
-              invites.map((invite) => (
+            {invitations && invitations.length !== 0 ? (
+              invitations.map((invite) => (
                 <Grid item key={invite.uid}>
                   <InviteCard data={invite} suggested={false} />
                 </Grid>
@@ -92,13 +98,15 @@ function PendingInvites() {
           </>
         )}
       </Grid>
-      {!loading && invites.length !== 0 && (
+      {/* {!loading &&  */}
+      {invitations && invitations.length !== 0 && (
         <Grid container justify="flex-end">
           <Button color="primary" onClick={handleSeeMore}>
             See more...
           </Button>
         </Grid>
       )}
+      {/* )} */}
     </Card>
   );
 }

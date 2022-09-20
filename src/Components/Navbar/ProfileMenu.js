@@ -5,12 +5,17 @@ import {
   makeStyles,
   fade,
   Menu,
+  Tooltip,
 } from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import EditProfileDialog from "../ProfilePage/EditProfileDialog";
 import { useHistory } from "react-router-dom";
 import { kBaseUrl } from "../../constants";
 import { ThemeContext } from "../../Context/ThemeContext";
+import { UserContext } from "../../Context/UserContext";
+import { useConnections } from "../../Context/ConnectionProvider";
+import { useNotifications } from "../../Context/NotificationProvider";
+import { useSocket } from "../../Context/SocketProvider";
 
 const useStyles = makeStyles((theme) => ({
   menuItem: {
@@ -35,6 +40,11 @@ const ProfileMenu = ({ setLogout }) => {
   const classes = useStyles();
   const history = useHistory();
   const { defaultTheme } = useContext(ThemeContext);
+  const { setUserProfile } = useContext(UserContext);
+  const { setConnections, setInvites, setSuggestions } = useConnections();
+  const { setNotifications, setNotifCount } = useNotifications();
+  const { setSocket } = useSocket();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -54,32 +64,45 @@ const ProfileMenu = ({ setLogout }) => {
   };
 
   const logout = () => {
-    history.replace("/login");
     setLogout();
+    history.replace("/");
   };
 
   const handleLogout = () => {
     fetch(kBaseUrl + "logout", {
       credentials: "include",
       method: "GET",
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("access-token")}`,
+      }
     })
-      .then((res) => res.json())
-      .then((data) => {
-        data.message !== "SUCCESS" ? console.log(data.message) : logout();
+      .then((res) => {
+        if (res.status === 200) {
+          logout();
+          setUserProfile(null);
+          setConnections([]);
+          setInvites([]);
+          setSuggestions([]);
+          setNotifCount(0);
+          setNotifications([]);
+          setSocket();
+        }
       })
       .catch((e) => console.log(e));
   };
 
   return (
     <div>
-      <IconButton
-        aria-controls="simple-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-        color="inherit"
-      >
-        <AccountCircleIcon />
-      </IconButton>
+      <Tooltip title="Profile Menu">
+        <IconButton
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+          onClick={handleClick}
+          color="inherit"
+        >
+          <AccountCircleIcon />
+        </IconButton>
+      </Tooltip>
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -102,6 +125,18 @@ const ProfileMenu = ({ setLogout }) => {
           onClick={handleViewProfile}
         >
           View Profile
+        </MenuItem>
+        <MenuItem
+          className={
+            defaultTheme === "dark" ? classes.menuItemDark : classes.menuItem
+          }        >
+          <a href="https://forms.gle/x8hHKXnGgeDBRWLb8" style={{ textDecoration: "none", color: defaultTheme === "dark" ? "#B6B6B6" : "#006BA6", }} target="_blank">Give Feedback</a>
+        </MenuItem>
+        <MenuItem
+          className={
+            defaultTheme === "dark" ? classes.menuItemDark : classes.menuItem
+          }        >
+          <a href="https://forms.gle/FZxyaz3w5K9PbQbS8" style={{ textDecoration: "none", color: defaultTheme === "dark" ? "#B6B6B6" : "#006BA6", }} target="_blank">Report a Bug</a>
         </MenuItem>
         <MenuItem
           className={

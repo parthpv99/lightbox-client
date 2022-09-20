@@ -1,10 +1,14 @@
 import React from "react";
-import { Grid, useMediaQuery, Container, makeStyles } from "@material-ui/core";
-import { Link, useHistory } from "react-router-dom";
+import { Grid, Container, makeStyles } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 const useStyle = makeStyles((theme) => ({
   footer: {
-    backgroundColor: theme.palette.primary.main,
+    zIndex: -1,
+    backgroundColor:
+      localStorage.getItem("dark-theme") === "true"
+        ? theme.palette.background.default
+        : theme.palette.primary.main,
     color: theme.palette.secondary.main,
     fontSize: "1.3rem",
     [theme.breakpoints.down("sm")]: {
@@ -12,9 +16,13 @@ const useStyle = makeStyles((theme) => ({
     },
   },
   footerSmallPage: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor:
+      localStorage.getItem("dark-theme") === "true"
+        ? theme.palette.background.default
+        : theme.palette.primary.main,
     color: theme.palette.secondary.main,
     fontSize: "1.3rem",
+    zIndex: -1,
     [theme.breakpoints.down("sm")]: {
       fontSize: "0.8rem",
       position: "relative",
@@ -41,7 +49,7 @@ const useStyle = makeStyles((theme) => ({
 
 const Footer = ({ smallPage }) => {
   const classes = useStyle();
-  const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+  // const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   const history = useHistory();
   return (
     <div className={smallPage ? classes.footerSmallPage : classes.footer}>
@@ -57,12 +65,21 @@ const Footer = ({ smallPage }) => {
                 <div className={classes.links}>
                   <p
                     onClick={() => {
+                      history.push("/");
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {" "}
+                    Home{" "}
+                  </p>
+                  <p
+                    onClick={() => {
                       history.push("/services");
                     }}
                     style={{ cursor: "pointer" }}
                   >
                     {" "}
-                    Our Services{" "}
+                    Services{" "}
                   </p>
                   <p
                     onClick={() => {
@@ -84,20 +101,36 @@ const Footer = ({ smallPage }) => {
                   </p>
                   <p
                     onClick={() => {
-                      history.push("/terms");
+                      history.push("/policy");
                     }}
                     style={{ cursor: "pointer" }}
                   >
                     {" "}
-                    Terms & Conditions{" "}
+                    Privacy Policy{" "}
                   </p>
                 </div>
               </Grid>
               <Grid item sm={3} style={{ marginLeft: 5, marginRight: 5 }}>
                 <p className={classes.heading}> Useful Links</p>
                 <div className={classes.links}>
-                  <p> Register </p>
-                  <p> Sign-In</p>
+                  <p
+                    onClick={() => {
+                      history.push("/register");
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {" "}
+                    Register{" "}
+                  </p>
+                  <p
+                    onClick={() => {
+                      history.push("/login");
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {" "}
+                    Sign-In
+                  </p>
                 </div>
               </Grid>
             </Grid>

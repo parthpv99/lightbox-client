@@ -16,6 +16,10 @@ let darktheme = createMuiTheme({
     text: {
       primary: "#fff",
       secondary: "rgba(255, 255, 255, 0.7)",
+      disabled: "rgba(255, 255, 255, 0.38)",
+    },
+    action: {
+      disabled: "rgba(255, 255, 255, 0.38)",
     },
   },
 });

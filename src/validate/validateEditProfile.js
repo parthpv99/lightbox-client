@@ -1,22 +1,24 @@
 export default function validateEditProfile(values) {
   let errors = {};
 
-  if (!values.fname) {
+  if (!values.fname.trim()) {
     errors.fname = "Firstname is required.";
-  } else if (!/^[A-Za-z]+$/.test(values.fname)) {
+  } else if (!/^[A-Za-z]+$/.test(values.fname.trim())) {
     errors.fname = "Firstname is not valid.";
   }
 
-  if (!values.lname) {
+  if (!values.lname.trim()) {
     errors.lname = "Lastname is required.";
-  } else if (!/(?=.[A-Za-z]+)/.test(values.lname)) {
+  } else if (!/(?=.[A-Za-z]+)/.test(values.lname.trim())) {
     errors.lname = "Lastname is not valid.";
   }
 
-  if (!values.title) {
+  if (!values.title.trim()) {
     errors.title = "Title is required.";
-  } else if (!/(?=.[A-Za-z]+)/.test(values.title)) {
+  } else if (!/(?=.[A-Za-z]+)/.test(values.title.trim())) {
     errors.title = "Title is not valid.";
+  } else if (values.title.trim().length > 75) {
+    errors.title = "Title too long";
   }
 
   if (!values.semester) {

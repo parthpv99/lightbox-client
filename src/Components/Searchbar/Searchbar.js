@@ -47,7 +47,7 @@ function Searchbar({ hintText, handleSearch }) {
         />
         {/* <IconButton
           type="submit"
-          color="primary"
+          color="secondary"
           className={classes.iconButton}
           aria-label="search"
           onClick={searchHandler}

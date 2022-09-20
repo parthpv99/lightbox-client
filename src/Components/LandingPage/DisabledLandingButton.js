@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Button, Icon, makeStyles } from "@material-ui/core";
+import { Grid, Button, Icon, makeStyles, fade } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   disabledButton: {
@@ -7,9 +7,15 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "transparent",
     },
     "&:disabled": {
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor:
+        localStorage.getItem("dark-theme") === "true"
+          ? fade(theme.palette.secondary.main, 0.8)
+          : theme.palette.secondary.main,
       border: "1.5px solid #006BA6",
-      color: "rgba(95, 95, 95, 1.0)",
+      color:
+        localStorage.getItem("dark-theme") === "true"
+          ? theme.palette.background.default
+          : "rgba(95, 95, 95, 1.0)",
       fontSize: "1.1rem",
     },
     [theme.breakpoints.down("sm")]: {
@@ -17,6 +23,12 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "0.75rem",
       },
     },
+  },
+  darkIcon: {
+    color: theme.palette.background.default,
+  },
+  icon: {
+    color: theme.palette.primary.main,
   },
 }));
 
@@ -32,7 +44,17 @@ const DisabledLandingButton = ({ text, align }) => {
     >
       <Grid container justify={align === "left" ? "space-between" : "flex-end"}>
         {text}
-        {align === "left" && <Icon color="primary">arrow_right_alt</Icon>}
+        {/* {align === "left" && (
+          <Icon
+            className={
+              localStorage.getItem("dark-theme") === "true"
+                ? classes.darkIcon
+                : classes.icon
+            }
+          >
+            arrow_right_alt
+          </Icon>
+        )} */}
       </Grid>
     </Button>
   );

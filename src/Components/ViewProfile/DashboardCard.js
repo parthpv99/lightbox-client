@@ -37,7 +37,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function DashboardCard({ data }) {
+function DashboardCard({
+  connectionslength,
+  postslength,
+  blogslength,
+  projectslength,
+}) {
   const classes = useStyles();
   return (
     <Card className={classes.card}>
@@ -52,7 +57,7 @@ function DashboardCard({ data }) {
           alignItems="center"
           justify="space-between"
         >
-          <Grid item md={3} xs={6}>
+          <Grid item xs={4}>
             <Grid
               container
               direction="column"
@@ -60,16 +65,14 @@ function DashboardCard({ data }) {
               alignItems="center"
             >
               <Grid item>
-                <Typography className={classes.count}>05</Typography>
+                <Typography className={classes.count}>{postslength}</Typography>
               </Grid>
               <Grid item>
-                <Typography className={classes.itemheading}>
-                  Total Posts
-                </Typography>
+                <Typography className={classes.itemheading}>Posts</Typography>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item md={3} xs={6}>
+          {/* <Grid item md={3} xs={6}>
             <Grid
               container
               direction="column"
@@ -77,7 +80,7 @@ function DashboardCard({ data }) {
               alignItems="center"
             >
               <Grid item>
-                <Typography className={classes.count}>03</Typography>
+                <Typography className={classes.count}>{blogslength}</Typography>
               </Grid>
               <Grid item>
                 <Typography className={classes.itemheading}>
@@ -85,8 +88,8 @@ function DashboardCard({ data }) {
                 </Typography>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid item md={3} xs={6}>
+          </Grid> */}
+          <Grid item xs={4}>
             <Grid
               container
               direction="column"
@@ -94,16 +97,18 @@ function DashboardCard({ data }) {
               alignItems="center"
             >
               <Grid item>
-                <Typography className={classes.count}>45</Typography>
+                <Typography className={classes.count}>
+                  {connectionslength}
+                </Typography>
               </Grid>
               <Grid item>
                 <Typography className={classes.itemheading}>
-                  Total Connections
+                  Connections
                 </Typography>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item md={3} xs={6}>
+          <Grid item xs={4}>
             <Grid
               container
               direction="column"
@@ -111,11 +116,13 @@ function DashboardCard({ data }) {
               alignItems="center"
             >
               <Grid item>
-                <Typography className={classes.count}>03</Typography>
+                <Typography className={classes.count}>
+                  {projectslength}
+                </Typography>
               </Grid>
               <Grid item>
                 <Typography className={classes.itemheading}>
-                  Total Projects
+                  Projects
                 </Typography>
               </Grid>
             </Grid>

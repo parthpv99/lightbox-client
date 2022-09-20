@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  Avatar,
+  // Avatar,
   Card,
   Grid,
   makeStyles,
@@ -8,7 +8,7 @@ import {
   IconButton,
   CardMedia,
 } from "@material-ui/core";
-import user from "../../assets/user.png";
+// import user from "../../assets/user.png";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
@@ -135,12 +135,22 @@ function DeveloperCard({
               <IconButton>
                 {mentor ? (
                   <AssignmentIndIcon
-                    style={{ color: "black" }}
+                    style={{
+                      color:
+                        localStorage.getItem("dark-theme") === "true"
+                          ? "white"
+                          : "black",
+                    }}
                     onClick={() => window.open(scholar, "_blank")}
                   />
                 ) : (
                   <GitHubIcon
-                    style={{ color: "black" }}
+                    style={{
+                      color:
+                        localStorage.getItem("dark-theme") === "true"
+                          ? "white"
+                          : "black",
+                    }}
                     onClick={() => window.open(github, "_blank")}
                   />
                 )}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Container,
   Grid,
@@ -7,7 +7,9 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import group from "../../assets/section-1.jpg";
+import darkgroup from "../../assets/section-1-dark.jpg";
 import DisabledLandingButton from "./DisabledLandingButton";
+import { ThemeContext } from "../../Context/ThemeContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SectionOne = () => {
   const classes = useStyles();
+  const { defaultTheme } = useContext(ThemeContext);
 
   return (
     <div className={classes.root}>
@@ -60,7 +63,11 @@ const SectionOne = () => {
             </Grid>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Avatar className={classes.avatar} src={group} alt="Group Image" />
+            <Avatar
+              className={classes.avatar}
+              src={defaultTheme === "dark" ? darkgroup : group}
+              alt="Group Image"
+            />
           </Grid>
         </Grid>
       </Container>

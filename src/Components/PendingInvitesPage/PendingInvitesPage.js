@@ -9,8 +9,33 @@ import { kBaseUrl } from "../../constants";
 import AllPendingInvites from "./AllPendingInvites";
 import { ThemeContext } from "../../Context/ThemeContext";
 import { MoonLoader } from "react-spinners";
+import { useConnections } from "../../Context/ConnectionProvider";
 
 function PendingInvitesPage() {
+  const { invites, setInvites } = useConnections();
+  const [result, setResult] = useState(invites);
+  const [loading, setloading] = useState(true);
+  const { defaultTheme } = useContext(ThemeContext);
+  const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+
+  useEffect(() => {
+    fetch(kBaseUrl + "request_received", {
+      credentials: "include",
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("access-token")}`,
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setInvites(data);
+        setResult(data);
+        setloading(false);
+      })
+      .catch((e) => console.log(e));
+    // setResult(invites);
+  }, []);
+
   const handleSearch = (search) => {
     const searchresult = invites.filter((invite) => {
       const str =
@@ -28,26 +53,6 @@ function PendingInvitesPage() {
     searchresult !== "" ? setResult(searchresult) : setResult(invites);
   };
 
-  useEffect(() => {
-    fetch(kBaseUrl + "request_received", {
-      credentials: "include",
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setinvites(data.data);
-        setResult(data.data);
-      })
-      .then(() => setloading(false))
-      .catch((e) => console.log(e));
-  }, []);
-
-  const [invites, setinvites] = useState([]);
-  const [result, setResult] = useState([]);
-  const [loading, setloading] = useState(true);
-  const { defaultTheme } = useContext(ThemeContext);
-
-  const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   return (
     <Box my={matches ? 10 : 15} mx={3}>
       <Grid container direction="row" justify="space-between">
@@ -62,7 +67,7 @@ function PendingInvitesPage() {
               <PageHeading
                 title="Invites"
                 countTitle="Total Invites"
-                count={result.length}
+                count={result && result.length}
                 icon={
                   <GroupIcon style={{ fontSize: "300%", color: "#5F5F5F" }} />
                 }
@@ -84,7 +89,7 @@ function PendingInvitesPage() {
                   loading={loading}
                 />
               ) : (
-                <AllPendingInvites data={result} />
+                <AllPendingInvites data={result ? result : invites} />
               )}
             </Grid>
           </Grid>

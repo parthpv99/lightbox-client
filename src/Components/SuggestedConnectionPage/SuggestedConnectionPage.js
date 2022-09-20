@@ -9,8 +9,34 @@ import SideMenus from "../ConnectionPage/SideMenus";
 import { kBaseUrl } from "../../constants";
 import { MoonLoader } from "react-spinners";
 import { ThemeContext } from "../../Context/ThemeContext";
+import { useConnections } from "../../Context/ConnectionProvider";
+import { useToast } from "../../Context/ToastProvider";
 
 function SuggestedConnectionPage() {
+  const [loading, setloading] = useState(true);
+  const { suggestions, setSuggestions } = useConnections();
+  const [result, setResult] = useState(suggestions);
+  const { defaultTheme } = useContext(ThemeContext);
+  const { message } = useToast();
+  const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+
+  useEffect(() => {
+    fetch(kBaseUrl + "suggest_connection", {
+      credentials: "include",
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("access-token")}`,
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setSuggestions(data);
+        setResult(data);
+      })
+      .then(() => setloading(false))
+      .catch((e) => console.log(e));
+  }, [message]);
+
   const handleSearch = (search) => {
     const searchresult = suggestions.filter((suggestion) => {
       const str =
@@ -28,26 +54,6 @@ function SuggestedConnectionPage() {
     searchresult !== "" ? setResult(searchresult) : setResult(suggestions);
   };
 
-  const [loading, setloading] = useState(true);
-  const [suggestions, setSuggestions] = useState([]);
-  const [result, setResult] = useState([]);
-  const { defaultTheme } = useContext(ThemeContext);
-  const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
-
-  useEffect(() => {
-    fetch(kBaseUrl + "suggest_connection", {
-      credentials: "include",
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setSuggestions(data);
-        setResult(data);
-      })
-      .then(() => setloading(false))
-      .catch((e) => console.log(e));
-  }, []);
-
   return (
     <Box my={matches ? 10 : 15} mx={3}>
       <Grid container direction="row" justify="space-between">
@@ -62,7 +68,7 @@ function SuggestedConnectionPage() {
               <PageHeading
                 title="Suggestions"
                 countTitle="Total Suggestions"
-                count={result.length}
+                count={result && result.length}
                 icon={
                   <GroupIcon style={{ fontSize: "300%", color: "#5F5F5F" }} />
                 }

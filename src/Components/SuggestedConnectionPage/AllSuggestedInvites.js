@@ -6,23 +6,25 @@ import user from "../../assets/user.png";
 function AllSuggestedInvites({ data }) {
   const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   return (
-    <Box style={{ alignItems: "center" }}>
+    <Box style={{ alignItems: "center", width: "100%" }}>
       <Grid
         container
         direction="row"
         justify={matches ? "flex-start" : "center"}
+        alignItems="flex-start"
         spacing={2}
       >
-        {data.length !== 0 ? (
+        {data && data.length !== 0 ? (
           data.map((suggestion, index) => (
             <Grid item xs={matches ? 6 : 11} key={suggestion.uid}>
               <Connection
-                uid={suggestion.uid}
-                name={suggestion.fname + " " + suggestion.lname}
-                semester={suggestion.semester}
-                branch={suggestion.branch}
-                role={suggestion.title}
-                photo={user}
+                data={suggestion}
+                photo={
+                  // user
+                  suggestion.thumbnail_pic !== ""
+                    ? suggestion.thumbnail_pic
+                    : user
+                }
                 suggested={true}
                 invite={false}
               />

@@ -6,23 +6,21 @@ import user from "../../assets/user.png";
 function AllPendingInvites({ data }) {
   const matches = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   return (
-    <Box style={{ alignItems: "center" }}>
+    <Box style={{ alignItems: "center", width: "100%" }}>
       <Grid
         container
         direction="row"
         justify={matches ? "flex-start" : "center"}
         spacing={2}
       >
-        {data.length !== 0 ? (
+        {data && data.length !== 0 ? (
           data.map((invite) => (
             <Grid item xs={matches ? 6 : 11} key={invite.uid}>
               <Connection
-                uid={invite.uid}
-                name={invite.fname + " " + invite.lname}
-                semester={invite.semester}
-                branch={invite.branch}
-                role={invite.title}
-                photo={invite.photo ? invite.photo : user}
+                data={invite}
+                photo={
+                  invite.thumbnail_pic !== "" ? invite.thumbnail_pic : user
+                }
                 suggested={false}
                 invite={true}
               />

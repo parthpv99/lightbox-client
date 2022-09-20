@@ -26,20 +26,22 @@ const styles = (theme) => ({
 });
 
 const DialogTitle = withStyles(styles)((props) => {
-  const { children, classes, onClose, ...other } = props;
+  const { children, classes, required, onClose, ...other } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
       <Typography color="primary" variant="h6">
         {children}
       </Typography>
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          className={classes.closeButton}
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
+      {!required ? (
+        onClose ? (
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null
       ) : null}
     </MuiDialogTitle>
   );
@@ -75,7 +77,7 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-const EditProfileDialog = ({ open, handleClickOpen }) => {
+const EditProfileDialog = ({ open, handleClickOpen, required, setLogin }) => {
   const [openWarning, setOpenWarning] = React.useState(false);
 
   const handleWarningClickOpen = () => {
@@ -123,6 +125,7 @@ const EditProfileDialog = ({ open, handleClickOpen }) => {
     >
       <DialogTitle
         id="customized-dialog-title"
+        required={required}
         onClose={handleWarningClickOpen}
         style={{ textAlign: "center" }}
       >
@@ -130,7 +133,11 @@ const EditProfileDialog = ({ open, handleClickOpen }) => {
       </DialogTitle>
       <DialogContent>
         {WarningDialog}
-        <EditProfileFormValidate />
+        <EditProfileFormValidate
+          handleClose={handleClickOpen}
+          required={required}
+          setLogin={setLogin}
+        />
       </DialogContent>
       <DialogActions>
         <Button

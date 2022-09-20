@@ -6,7 +6,7 @@ import SuggestedInvites from "./SuggestedInvites";
 const useStyle = makeStyles(() => ({
   sidemenu: {
     position: "fixed",
-    width: "22%",
+    maxWidth: "22%",
   },
 }));
 

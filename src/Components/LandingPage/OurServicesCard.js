@@ -1,11 +1,11 @@
 import React from "react";
 import {
-  Avatar,
+  // Avatar,
   Card,
   Grid,
   makeStyles,
   Typography,
-  IconButton,
+  // IconButton,
   CardMedia,
 } from "@material-ui/core";
 
@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: "1.5rem",
     fontWeight: "bold",
+    textAlign: "center",
     paddingBottom: 0,
     color: theme.palette.primary.main,
   },
