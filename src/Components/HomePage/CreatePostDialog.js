@@ -19,7 +19,7 @@ import validate from "../../validate/validateCreatePost";
 import SnackBar from "../SnackBar";
 import { useToast } from "../../Context/ToastProvider";
 import { usePosts } from "../../Context/PostsProvider";
-import imageToBase64 from "image-to-base64";
+// import imageToBase64 from "image-to-base64";
 import { useMyPosts } from "../../Context/MyPostsProvider";
 import { Backdrop, CircularProgress } from "@material-ui/core";
 
@@ -121,7 +121,7 @@ const useStyles = makeStyles((theme) => ({
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
+    color: "#fff",
   },
   dialog: {
     "&::-webkit-scrollbar": {
@@ -230,7 +230,7 @@ const CreatePostDialog = ({ open, handleClickOpen, edit, postdata }) => {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("access-token")}`,
+        Authorization: `Bearer ${localStorage.getItem("access-token")}`,
       },
       body: JSON.stringify({
         _id: edit && postdata._id,
